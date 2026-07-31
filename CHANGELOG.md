@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/amritk/test-cli/compare/v0.3.0...v0.3.1) (2026-07-31)
+
+
+### Chores
+
+* **api:** update generated SDK content ([1985b22](https://github.com/amritk/test-cli/commit/1985b2254002b21976c24b9aac2823a16b943a29))
+
 ## [0.3.0](https://github.com/amritk/test-cli/compare/v0.2.0...v0.3.0) (2026-07-31)
 
 
