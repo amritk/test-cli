@@ -55,3 +55,87 @@ jobs:
           git checkout -B scalar-next origin/scalar-next
           git merge --no-edit -m "Sync release ${{ steps.release.outputs.tag_name }} back to scalar-next" "${{ steps.release.outputs.sha }}"
           git push origin scalar-next
+  publish:
+    needs: release-please
+    # `!cancelled()` keeps publishing even when the back-sync to the integration branch
+    # failed: a raced integration branch must not block the release from reaching its
+    # registry.
+    if: ${{ !cancelled() && needs.release-please.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+    # Job-level permissions replace the workflow's release-cutting grants with the publish
+    # floor. OIDC trusted publishing verifies this run's claims, which name this workflow
+    # file — register release-please.yml as the trusted publisher on the registry.
+    permissions:
+      contents: write
+      id-token: write
+      packages: write
+    env:
+      VERSIONING_POLICY: manual
+    steps:
+      # Publishing runs inline — a top-level job of this same run — rather than dispatching
+      # sdk-release.yml: workflow_dispatch resolves the target workflow on the repository's
+      # default branch only, so a dispatch would 404 whenever the release line is any other
+      # branch, while OIDC trusted publishing accepts this job because it stays top-level
+      # (never a reusable-workflow call). The release-please job cut the tag earlier in this
+      # run; checking it out publishes exactly the released commit, not the branch head that
+      # triggered the workflow.
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "20"
+      - run: npm install
+      - run: npm run build
+      # The version is owned by release tooling in this repository, never by the SDK generator,
+      # so every release step reads it from package.json at run time.
+      - name: Read package version
+        run: echo "PKG_VERSION=$(node -p 'require("./package.json").version')" >> "$GITHUB_ENV"
+      - name: Package release tarball
+        run: npm pack --pack-destination . && mv "$(ls *.tgz | head -n1)" "galaxy-${PKG_VERSION}.tgz"
+      - name: Attach binary to the release
+        run: gh release upload "v${PKG_VERSION}" "galaxy-${PKG_VERSION}.tgz" --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update Homebrew tap
+        env:
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          # Reads back the tarball the preceding asset step just uploaded. That step runs
+          # `gh release upload` on the ambient GITHUB_TOKEN, which can only write releases in
+          # the repository the workflow runs in, so the download must resolve against
+          # `github.repository` too. Deriving it from configured productionRepo instead lets the
+          # two disagree — a renamed, transferred, or forked destination repo then 404s here on
+          # every release, having uploaded the asset perfectly well one step earlier.
+          ASSET_URL="https://github.com/${{ github.repository }}/releases/download/v${PKG_VERSION}/galaxy-${PKG_VERSION}.tgz"
+          curl -fsSL "$ASSET_URL" -o release.tgz
+          SHA256="$(shasum -a 256 release.tgz | cut -d" " -f1)"
+          git clone "https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/amritk/test-cli-homebrew.git" tap
+          mkdir -p tap/Formula
+          cat > "tap/Formula/galaxy.rb" <<'EOF'
+          class Galaxy < Formula
+            desc "galaxy command-line interface"
+            homepage "https://github.com/amritk/test-cli"
+            url "__ASSET_URL__"
+            sha256 "__SHA256__"
+            version "__VERSION__"
+            depends_on "node"
+
+            def install
+              system "npm", "install", *std_npm_args
+              bin.install_symlink Dir["#{libexec}/bin/*"]
+            end
+
+            test do
+              system "#{bin}/galaxy", "--help"
+            end
+          end
+          EOF
+          sed -e "s|__SHA256__|$SHA256|" -e "s|__ASSET_URL__|$ASSET_URL|" -e "s|__VERSION__|$PKG_VERSION|" "tap/Formula/galaxy.rb" > "tap/Formula/galaxy.rb.tmp"
+          mv "tap/Formula/galaxy.rb.tmp" "tap/Formula/galaxy.rb"
+          cd tap
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "Formula/galaxy.rb"
+          git commit -m "galaxy ${PKG_VERSION}" || { echo "formula unchanged, skipping"; exit 0; }
+          git push

@@ -3,8 +3,7 @@
   "slug": "galaxy",
   "generatorVersion": "0.21.1",
   "servers": [
-    "https://galaxy.scalar.com",
-    "{protocol}://void.scalar.com/{path}"
+    "https://galaxy.scalar.com"
   ],
   "environments": {
     "production": "https://galaxy.scalar.com",
