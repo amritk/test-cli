@@ -1,0 +1,82 @@
+name: CLI SDK Release
+
+on:
+  # Manual re-publish only: the automated publish for each release runs as the `publish` job
+  # inside release-please.yml, in the same run that cuts the tag (dispatching a workflow here
+  # instead would resolve it on the repository's default branch only, which breaks releasing
+  # from any other release line). Dispatch this workflow at an existing release tag to re-run
+  # a failed or skipped publish. A dispatched run is top-level, so OIDC trusted-publisher
+  # claims name this file; register it as an additional trusted publisher only when manual
+  # re-publishes are used. Never add a workflow_call trigger here — registries reject
+  # publishes from called (reusable) workflows.
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      VERSIONING_POLICY: manual
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "20"
+      - run: npm install
+      - run: npm run build
+      # The version is owned by release tooling in this repository, never by the SDK generator,
+      # so every release step reads it from package.json at run time.
+      - name: Read package version
+        run: echo "PKG_VERSION=$(node -p 'require("./package.json").version')" >> "$GITHUB_ENV"
+      - name: Package release tarball
+        run: npm pack --pack-destination . && mv "$(ls *.tgz | head -n1)" "galaxy-${PKG_VERSION}.tgz"
+      - name: Attach binary to the release
+        run: gh release upload "v${PKG_VERSION}" "galaxy-${PKG_VERSION}.tgz" --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update Homebrew tap
+        env:
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          # Reads back the tarball the preceding asset step just uploaded. That step runs
+          # `gh release upload` on the ambient GITHUB_TOKEN, which can only write releases in
+          # the repository the workflow runs in, so the download must resolve against
+          # `github.repository` too. Deriving it from configured productionRepo instead lets the
+          # two disagree — a renamed, transferred, or forked destination repo then 404s here on
+          # every release, having uploaded the asset perfectly well one step earlier.
+          ASSET_URL="https://github.com/${{ github.repository }}/releases/download/v${PKG_VERSION}/galaxy-${PKG_VERSION}.tgz"
+          curl -fsSL "$ASSET_URL" -o release.tgz
+          SHA256="$(shasum -a 256 release.tgz | cut -d" " -f1)"
+          git clone "https://x-access-token:${HOMEBREW_TAP_TOKEN}@github.com/amritk/test-cli-homebrew.git" tap
+          mkdir -p tap/Formula
+          cat > "tap/Formula/galaxy.rb" <<'EOF'
+          class Galaxy < Formula
+            desc "galaxy command-line interface"
+            homepage "https://github.com/amritk/test-cli"
+            url "__ASSET_URL__"
+            sha256 "__SHA256__"
+            version "__VERSION__"
+            depends_on "node"
+
+            def install
+              system "npm", "install", *std_npm_args
+              bin.install_symlink Dir["#{libexec}/bin/*"]
+            end
+
+            test do
+              system "#{bin}/galaxy", "--help"
+            end
+          end
+          EOF
+          sed -e "s|__SHA256__|$SHA256|" -e "s|__ASSET_URL__|$ASSET_URL|" -e "s|__VERSION__|$PKG_VERSION|" "tap/Formula/galaxy.rb" > "tap/Formula/galaxy.rb.tmp"
+          mv "tap/Formula/galaxy.rb.tmp" "tap/Formula/galaxy.rb"
+          cd tap
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "Formula/galaxy.rb"
+          git commit -m "galaxy ${PKG_VERSION}" || { echo "formula unchanged, skipping"; exit 0; }
+          git push
