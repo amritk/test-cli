@@ -27,44 +27,11 @@
   "servers": [
     {
       "url": "https://galaxy.scalar.com"
-    },
-    {
-      "url": "{protocol}://void.scalar.com/{path}",
-      "description": "Responds with your request data",
-      "variables": {
-        "protocol": {
-          "enum": [
-            "https"
-          ],
-          "default": "https"
-        },
-        "path": {
-          "default": ""
-        }
-      }
     }
   ],
   "security": [
     {
       "bearerAuth": []
-    },
-    {
-      "basicAuth": []
-    },
-    {
-      "apiKeyQuery": []
-    },
-    {
-      "apiKeyHeader": []
-    },
-    {
-      "apiKeyCookie": []
-    },
-    {
-      "oAuth2": []
-    },
-    {
-      "openIdConnect": []
     }
   ],
   "tags": [

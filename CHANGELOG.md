@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0](https://github.com/amritk/test-cli/compare/v0.2.0...v0.3.0) (2026-07-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Removed server `{protocol}://void.scalar.com/{path}`.
+
+### Features
+
+* **api:** remove server {protocol}://void.scalar.com/{path} ([5e3e059](https://github.com/amritk/test-cli/commit/5e3e059ef26b1c5ac8b8817ad6984b6f72eeb2a8))
+
 ## [0.2.0](https://github.com/amritk/test-cli/compare/v0.1.0...v0.2.0) (2026-07-31)
 
 
