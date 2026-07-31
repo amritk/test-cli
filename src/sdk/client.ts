@@ -830,11 +830,7 @@ export class Galaxy {
   private validateAuth(url: string, headers: Headers, options: FinalRequestOptions): void {
     if (headers.has("Authorization")) return;
     if (headerExplicitlyOmitted(options.headers, "Authorization")) return;
-    if (headers.has("X-API-Key")) return;
-    if (headerExplicitlyOmitted(options.headers, "X-API-Key")) return;
-    if (new URL(url).searchParams.has("api_key")) return;
-    if (cookieHeaderHas(headers.get("Cookie"), "api_key")) return;
-    throw new Errors.AuthenticationError(401, {}, "Could not resolve authentication method. Expected Authorization or X-API-Key or query api_key or cookie api_key to be set.", headers);
+    throw new Errors.AuthenticationError(401, {}, "Could not resolve authentication method. Expected Authorization to be set.", headers);
   }
 
   authHeadersSync(): Record<string, string> {
