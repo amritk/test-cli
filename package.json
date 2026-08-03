@@ -35,7 +35,8 @@
     "./man/galaxy-celestial-bodies-create.1",
     "./man/galaxy-authentication-create-user.1",
     "./man/galaxy-authentication-create-token.1",
-    "./man/galaxy-authentication-list-me.1"
+    "./man/galaxy-authentication-list-me.1",
+    "./man/galaxy-completion.1"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && node scripts/finalize-build.mjs",

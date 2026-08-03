@@ -92,6 +92,19 @@ Get a token. See galaxy\-authentication\-create\-token(1).
 .TP
 \fBgalaxy authentication list\-me\fR
 Get authenticated user. See galaxy\-authentication\-list\-me(1).
+.TP
+\fBgalaxy completion\fR
+Print a shell completion script. See galaxy\-completion(1).
+.SH "SHELL COMPLETION"
+galaxy completion <shell> prints a completion script for bash, zsh, and fish. Load it from your shell startup file:
+.PP
+.RS 4
+.nf
+eval "$(galaxy completion bash)"
+eval "$(galaxy completion zsh)"
+galaxy completion fish | source
+.fi
+.RE
 .SH "ENVIRONMENT"
 .TP
 \fBBEARER_AUTH\fR

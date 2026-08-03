@@ -11,6 +11,7 @@ The full API of this library can be found in [api.md](./api.md).
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Reference](./api.md)
+- [Shell Completion](#shell-completion)
 - [Manual Pages](#manual-pages)
 - [Authentication](#authentication)
 - [Errors](#errors)
@@ -25,7 +26,8 @@ The full API of this library can be found in [api.md](./api.md).
 ## Installation
 
 ```sh
-npm install -g galaxy-cli
+# Homebrew — standalone binary, no Node.js required
+brew install amritk/tap/galaxy
 ```
 
 <br />
@@ -41,6 +43,23 @@ galaxy planets list-all-data --bearer-auth "$BEARER_AUTH" --limit '10' --offset 
 The examples in the following sections assume a `client` configured as shown above.
 
 See the [API reference](./api.md) for every available operation.
+
+<br />
+
+## Shell Completion
+
+`galaxy completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
+
+```sh
+# bash (~/.bashrc)
+eval "$(galaxy completion bash)"
+
+# zsh (~/.zshrc)
+eval "$(galaxy completion zsh)"
+
+# fish (~/.config/fish/config.fish)
+galaxy completion fish | source
+```
 
 <br />
 
@@ -127,6 +146,6 @@ Generated clients support request timeouts and retry temporary failures such as 
 
 ## Requirements
 
-- Node.js 20 or newer
+- None — the standalone binaries bundle their own runtime.
 
 Powered by Scalar.
