@@ -3,6 +3,7 @@
 import type { Command } from 'commander'
 import SDK from '../sdk/index'
 import { createProgram, type CliClientOptionDefinition, type CliCommandDefinition } from '../cli/runtime'
+import { completions } from '../cli/completions'
 
 const clientOptions = [
   {
@@ -808,10 +809,11 @@ export const getProgram = (): Command =>
   createProgram({
     SDK,
     binaryName: "galaxy",
-    version: "0.3.1", // x-release-please-version
+    version: "0.3.2", // x-release-please-version
     description: "CLI for galaxy",
     defaultFormat: "auto",
     defaultErrorFormat: "auto",
     clientOptions,
     commands,
+    completions,
   })

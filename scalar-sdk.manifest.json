@@ -1,7 +1,7 @@
 {
   "name": "Galaxy",
   "slug": "galaxy",
-  "generatorVersion": "0.21.1",
+  "generatorVersion": "0.22.2",
   "servers": [
     "https://galaxy.scalar.com"
   ],

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/amritk/test-cli/compare/v0.3.1...v0.3.2) (2026-08-03)
+
+
+### Chores
+
+* **api:** regenerate SDK ([b66fefe](https://github.com/amritk/test-cli/commit/b66fefe67e95c29094829ef55e1afffba09131c9))
+
 ## [0.3.1](https://github.com/amritk/test-cli/compare/v0.3.0...v0.3.1) (2026-07-31)
 
 

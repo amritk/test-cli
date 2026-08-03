@@ -10,7 +10,8 @@ Generated CLI client for galaxy API, published as `galaxy-cli`. Use the generate
 ## Install
 
 ```sh
-npm install -g galaxy-cli
+# Homebrew — standalone binary, no Node.js required
+brew install amritk/tap/galaxy
 ```
 
 ## Client setup and authentication
@@ -42,7 +43,7 @@ Non-success responses throw generated API errors. Error objects expose status, h
 
 ## Requirements
 
-- Node.js 20 or newer
+- None — the standalone binaries bundle their own runtime.
 
 ## Reference files
 

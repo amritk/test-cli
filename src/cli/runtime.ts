@@ -66,6 +66,9 @@ export type CreateProgramOptions = {
   readonly defaultErrorFormat: OutputFormat
   readonly clientOptions: readonly CliClientOptionDefinition[]
   readonly commands: readonly CliCommandDefinition[]
+  // Completion script per shell, generated alongside the command table. Absent when the SDK
+  // config disables shell completions, in which case no `completion` command is registered.
+  readonly completions?: Readonly<Record<string, string>>
 }
 
 type OutputOptions = {
@@ -92,7 +95,7 @@ type GlobalOptions = {
   readonly maxItems?: string
 }
 
-export const createProgram = ({ SDK, binaryName, version, description, defaultFormat, defaultErrorFormat, clientOptions, commands }: CreateProgramOptions): Command => {
+export const createProgram = ({ SDK, binaryName, version, description, defaultFormat, defaultErrorFormat, clientOptions, commands, completions }: CreateProgramOptions): Command => {
   const program = new Command()
   program
     .enablePositionalOptions()
@@ -118,7 +121,43 @@ export const createProgram = ({ SDK, binaryName, version, description, defaultFo
 
   for (const definition of commands) addGeneratedCommand(program, SDK, clientOptions, definition)
 
+  if (completions) addCompletionCommand(program, binaryName, completions)
+
   return program
+}
+
+// Prints the completion script for one shell. The scripts are generated from the same command
+// table this program is built from, so they always describe the commands and flags below; nothing
+// is derived from the live Commander tree, and no shell code is assembled at runtime.
+const addCompletionCommand = (program: Command, binaryName: string, completions: Readonly<Record<string, string>>): void => {
+  const shells = Object.keys(completions)
+  program
+    .command("completion")
+    .description("Print a shell completion script (" + shells.join(", ") + ")")
+    .argument("<shell>", "Shell to print a completion script for: " + shells.join(", "))
+    .addHelpText("after", completionHelpExamples(binaryName, shells))
+    .action((shell: string) => {
+      // Own-property lookup only: a bare `completions[shell]` would resolve inherited keys like
+      // "constructor" or "__proto__" to something that is not a completion script.
+      const script = Object.prototype.hasOwnProperty.call(completions, shell) ? completions[shell] : undefined
+      if (script === undefined) {
+        process.stderr.write("Unsupported shell '" + shell + "'. Supported shells: " + shells.join(", ") + "\n")
+        process.exitCode = 1
+        return
+      }
+      processStdout.write(script)
+    })
+}
+
+// Shows how to load each script, since every shell wires completions up differently.
+const completionHelpExamples = (binaryName: string, shells: readonly string[]): string => {
+  const examples: Record<string, string> = {
+    bash: "  eval \"$(" + binaryName + " completion bash)\"  # or write it to /etc/bash_completion.d",
+    zsh: "  eval \"$(" + binaryName + " completion zsh)\"  # or write it to a directory on $fpath",
+    fish: "  " + binaryName + " completion fish | source  # or write it to ~/.config/fish/completions",
+  }
+  const lines = shells.map((shell) => examples[shell]).filter((line): line is string => line !== undefined)
+  return lines.length > 0 ? "\nAdd one of these to your shell startup file:\n" + lines.join("\n") : ""
 }
 
 const clientOptionDescription = (option: CliClientOptionDefinition): string => {
