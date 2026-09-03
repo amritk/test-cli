@@ -1,13 +1,14 @@
 {
-  "name": "Galaxy",
-  "slug": "galaxy",
-  "generatorVersion": "0.22.2",
+  "name": "Testing12",
+  "slug": "testing12",
+  "generatorVersion": "0.32.0",
   "servers": [
-    "https://galaxy.scalar.com"
+    "https://galaxy.scalar.com",
+    "{protocol}://void.scalar.com/{path}"
   ],
   "environments": {
     "production": "https://galaxy.scalar.com",
-    "responds_with_your_request_data": "{protocol}://void.scalar.com/{path}"
+    "responds_with_your_request_data": "https://void.scalar.com/{path}"
   },
   "environmentOrder": [
     "production",
@@ -1003,8 +1004,8 @@
     {
       "resource": "planets",
       "publicResource": "planets",
-      "operation": "listAllData",
-      "publicOperation": "listAllData",
+      "operation": "list",
+      "publicOperation": "list",
       "deprecated": false,
       "method": "GET",
       "path": "/planets",
@@ -1045,7 +1046,7 @@
       "publicCookieParams": [],
       "cookieParamDetails": [],
       "paramsModel": {
-        "publicName": "PlanetListAllDataParams"
+        "publicName": "PlanetListParams"
       },
       "response": {
         "status": "200",

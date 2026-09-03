@@ -1,9 +1,9 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "GALAXY\-PLANETS\-UPDATE" "1" "" "galaxy" "galaxy Manual"
+.TH "TESTING12\-PLANETS\-UPDATE" "1" "" "testing12" "testing 12 Manual"
 .SH "NAME"
-galaxy\-planets\-update \- Update a planet
+testing12\-planets\-update \- Update a planet
 .SH "SYNOPSIS"
-.B galaxy planets update
+.B testing12 planets update
 \fIplanet\-id\fR \fB\-\-name\fR \fI<value>\fR \fB\-\-type\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Sometimes you make mistakes, that's fine. No worries, you can update all planets.
@@ -89,10 +89,10 @@ Request timeout in milliseconds.
 Number of retries for retryable failures.
 .TP
 \fB\-\-format\fR \fI<format>\fR
-Output format: auto, json, jsonl, pretty, raw, yaml.
+Output format: auto, json, jsonl, pretty, raw, toon, yaml.
 .TP
 \fB\-\-format\-error\fR \fI<format>\fR
-Error output format: auto, json, jsonl, pretty, raw, yaml.
+Error output format: auto, json, jsonl, pretty, raw, toon, yaml.
 .TP
 \fB\-\-transform\fR \fI<path>\fR
 Dot\-path transform for data output.
@@ -118,22 +118,22 @@ Basic HTTP authentication. Can also be set with the BASIC_AUTH_PASSWORD environm
 \fB\-\-api\-key\-header\fR \fI<value>\fR
 API key request header. Can also be set with the API_KEY_HEADER environment variable.
 .TP
-\fB\-\-api\-key\-query\fR \fI<value>\fR
-API key query parameter. Can also be set with the API_KEY_QUERY environment variable.
-.TP
 \fB\-\-api\-key\-cookie\fR \fI<value>\fR
 API key browser cookie. Can also be set with the API_KEY_COOKIE environment variable.
 .TP
 \fB\-\-o\-auth2\fR \fI<value>\fR
-OAuth 2.0 authentication. Can also be set with the SCALAR_O_AUTH2 environment variable.
+OAuth 2.0 authentication. Can also be set with the O_AUTH2 environment variable.
 .TP
 \fB\-\-open\-id\-connect\fR \fI<value>\fR
-OpenID Connect Authentication. Can also be set with the SCALAR_OPEN_ID_CONNECT environment variable.
+OpenID Connect Authentication. Can also be set with the OPEN_ID_CONNECT environment variable.
+.TP
+\fB\-\-api\-key\-query\fR \fI<value>\fR
+API key query parameter. Can also be set with the SCALAR_69_T4_L_API_KEY_QUERY environment variable.
 .SH "EXAMPLES"
 .PP
 .RS 4
 .nf
-galaxy planets update '1' \-\-bearer\-auth "$BEARER_AUTH" \-\-name 'Mars' \-\-type 'terrestrial'
+testing12 planets update '1' \-\-bearer\-auth "$BEARER_AUTH" \-\-name 'Mars' \-\-type 'terrestrial'
 .fi
 .RE
 .SH "ENVIRONMENT"
@@ -150,23 +150,44 @@ Fallback for \-\-basic\-auth\-password when the flag is not passed.
 \fBAPI_KEY_HEADER\fR
 Fallback for \-\-api\-key\-header when the flag is not passed.
 .TP
-\fBAPI_KEY_QUERY\fR
-Fallback for \-\-api\-key\-query when the flag is not passed.
-.TP
 \fBAPI_KEY_COOKIE\fR
 Fallback for \-\-api\-key\-cookie when the flag is not passed.
 .TP
-\fBSCALAR_O_AUTH2\fR
+\fBO_AUTH2\fR
 Fallback for \-\-o\-auth2 when the flag is not passed.
 .TP
-\fBSCALAR_OPEN_ID_CONNECT\fR
+\fBOPEN_ID_CONNECT\fR
 Fallback for \-\-open\-id\-connect when the flag is not passed.
+.TP
+\fBSCALAR_69_T4_L_API_KEY_QUERY\fR
+Fallback for \-\-api\-key\-query when the flag is not passed.
 .SH "EXIT STATUS"
 .TP
 \fB0\fR
 The command completed successfully.
 .TP
 \fB1\fR
-A usage error, or the request failed. The error is printed to standard error.
+The request failed for an unclassified reason. Reported as error.
+.TP
+\fB2\fR
+The command was invoked incorrectly (missing or invalid arguments).
+.TP
+\fB10\fR
+Authentication or authorization failed (HTTP 401 or 403). Reported as auth\-failed.
+.TP
+\fB11\fR
+The requested resource does not exist (HTTP 404). Reported as not\-found.
+.TP
+\fB12\fR
+The request was rate limited (HTTP 429). Reported as rate\-limited.
+.TP
+\fB13\fR
+The request was rejected (any other HTTP 4xx). Reported as client\-error.
+.TP
+\fB14\fR
+The API failed to handle the request (HTTP 5xx). Reported as server\-error.
+.TP
+\fB15\fR
+The API could not be reached, or the request timed out. Reported as connection\-error.
 .SH "SEE ALSO"
-.BR galaxy (1)
+.BR testing12 (1)

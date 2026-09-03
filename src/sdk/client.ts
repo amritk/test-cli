@@ -11,25 +11,52 @@ import * as Shims from './internal/shims';
 import * as Opts from './internal/request-options';
 import { readEnv } from './internal/utils/env';
 import { toBase64 } from './internal/utils/base64';
-import { formatRequestDetails, loggerFor, parseLogLevel, type LogLevel, type Logger } from './internal/utils/log';
+import {
+  formatRequestDetails,
+  loggerFor,
+  parseLogLevel,
+  type LogLevel,
+  type Logger,
+} from './internal/utils/log';
 export type { Logger, LogLevel } from './internal/utils/log';
 import type { RequestInit, RequestInfo, BodyInit, Fetch } from './internal/builtin-types';
-import { buildHeaders, type HeadersLike } from './internal/headers';
+import { buildHeaders, type HeadersLike, type NullableHeaders } from './internal/headers';
 import type { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import type { HTTPMethod, FinalizedRequestInit, MergedRequestInit, PromiseOrValue } from './internal/types';
 import { stringifyQuery } from './internal/utils/query';
 import { toFile } from './core/uploads';
 import { VERSION } from './version';
-import { Planets, type Planet, type PlanetListAllDataResponse, type PlanetUploadImageResponse, type PlanetListAllDataParams, type PlanetCreateParams, type PlanetUpdateParams, type PlanetUploadImageParams } from "./resources/planets";
-import { CelestialBodies, type CelestialBody, type CelestialBodyCreateParams } from "./resources/celestial-bodies";
-import { Authentication, type User, type Credentials, type AuthenticationCreateTokenResponse, type AuthenticationCreateUserParams, type AuthenticationCreateTokenParams } from "./resources/authentication";
-import { Webhooks, type NewPlanetWebhookEvent, type ParsedWebhookEvent } from "./resources/webhooks";
+import {
+  Planets,
+  type Planet,
+  type PaginatedResource,
+  type Satellite,
+  type PlanetListResponse,
+  type PlanetUploadImageResponse,
+  type PlanetListParams,
+  type PlanetCreateParams,
+  type PlanetUpdateParams,
+  type PlanetUploadImageParams,
+} from './resources/planets';
+import {
+  CelestialBodies,
+  type CelestialBody,
+  type CelestialBodyCreateParams,
+} from './resources/celestial-bodies';
+import {
+  Authentication,
+  type User,
+  type Token,
+  type AuthenticationCreateUserParams,
+  type AuthenticationCreateTokenParams,
+} from './resources/authentication';
+import { Webhooks, type NewPlanetWebhookEvent, type ParsedWebhookEvent } from './resources/webhooks';
 
 export type AuthTokenProvider = () => string | Promise<string>;
 
 const environments = {
-  production: "https://galaxy.scalar.com",
-  responds_with_your_request_data: "{protocol}://void.scalar.com/{path}",
+  production: 'https://galaxy.scalar.com',
+  responds_with_your_request_data: 'https://void.scalar.com/{path}',
 };
 type Environment = keyof typeof environments;
 
@@ -37,42 +64,42 @@ export interface ClientOptions {
   /**
    * JWT Bearer token authentication
    */
-  bearerAuth?: string | AuthTokenProvider | undefined;
+  bearerAuth?: string | AuthTokenProvider | null | undefined;
 
   /**
    * Basic HTTP authentication
    */
-  basicAuthUsername?: string | AuthTokenProvider | undefined;
+  basicAuthUsername?: string | AuthTokenProvider | null | undefined;
 
   /**
    * Basic HTTP authentication
    */
-  basicAuthPassword?: string | AuthTokenProvider | undefined;
+  basicAuthPassword?: string | AuthTokenProvider | null | undefined;
 
   /**
    * API key request header
    */
-  apiKeyHeader?: string | AuthTokenProvider | undefined;
+  apiKeyHeader?: string | AuthTokenProvider | null | undefined;
+
+  /**
+   * API key browser cookie
+   */
+  apiKeyCookie?: string | AuthTokenProvider | null | undefined;
+
+  /**
+   * OAuth 2.0 authentication
+   */
+  oAuth2?: string | AuthTokenProvider | null | undefined;
+
+  /**
+   * OpenID Connect Authentication
+   */
+  openIDConnect?: string | AuthTokenProvider | null | undefined;
 
   /**
    * API key query parameter
    */
   apiKeyQuery?: string | AuthTokenProvider | undefined;
-
-  /**
-   * API key browser cookie
-   */
-  apiKeyCookie?: string | AuthTokenProvider | undefined;
-
-  /**
-   * OAuth 2.0 authentication
-   */
-  oAuth2?: string | AuthTokenProvider | undefined;
-
-  /**
-   * OpenID Connect Authentication
-   */
-  openIDConnect?: string | AuthTokenProvider | undefined;
 
   /**
    * Secret used to verify incoming webhook signatures.
@@ -84,14 +111,14 @@ export interface ClientOptions {
    *
    * Each environment maps to a different base URL:
    * - `production` corresponds to `https://galaxy.scalar.com`
-   * - `responds_with_your_request_data` corresponds to `{protocol}://void.scalar.com/{path}`
+   * - `responds_with_your_request_data` corresponds to `https://void.scalar.com/{path}`
    */
   environment?: Environment | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
-   * Defaults to process.env["SCALAR_BASE_URL"].
+   * Defaults to process.env["SCALAR_69_T4_L_BASE_URL"].
    */
   baseURL?: string | null | undefined;
 
@@ -146,7 +173,7 @@ export interface ClientOptions {
   /**
    * Set the log level.
    *
-   * Defaults to process.env["SCALAR_LOG"] or 'warn' if it isn't set.
+   * Defaults to process.env["SCALAR_69_T4_L_LOG"] or 'warn' if it isn't set.
    */
   logLevel?: LogLevel | undefined;
 
@@ -158,20 +185,20 @@ export interface ClientOptions {
   logger?: Logger | undefined;
 }
 
-export type GalaxyOptions = ClientOptions;
+export type ApiTestOptions = ClientOptions;
 
 /**
- * API Client for interfacing with the Galaxy API.
+ * API Client for interfacing with the Testing12 API.
  */
-export class Galaxy {
-  bearerAuth: string | AuthTokenProvider | undefined;
-  basicAuthUsername: string | AuthTokenProvider | undefined;
-  basicAuthPassword: string | AuthTokenProvider | undefined;
-  apiKeyHeader: string | AuthTokenProvider | undefined;
+export class ApiTest {
+  bearerAuth: string | AuthTokenProvider | null;
+  basicAuthUsername: string | AuthTokenProvider | null;
+  basicAuthPassword: string | AuthTokenProvider | null;
+  apiKeyHeader: string | AuthTokenProvider | null;
+  apiKeyCookie: string | AuthTokenProvider | null;
+  oAuth2: string | AuthTokenProvider | null;
+  openIDConnect: string | AuthTokenProvider | null;
   apiKeyQuery: string | AuthTokenProvider | undefined;
-  apiKeyCookie: string | AuthTokenProvider | undefined;
-  oAuth2: string | AuthTokenProvider | undefined;
-  openIDConnect: string | AuthTokenProvider | undefined;
   webhookSecret: string | null;
 
   baseURL: string;
@@ -188,19 +215,19 @@ export class Galaxy {
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the Galaxy API.
+   * API Client for interfacing with the Testing12 API.
    *
-   * @param {string | AuthTokenProvider | undefined} [opts.bearerAuth=process.env["BEARER_AUTH"] ?? undefined]
-   * @param {string | AuthTokenProvider | undefined} [opts.basicAuthUsername=process.env["BASIC_AUTH_USERNAME"] ?? undefined]
-   * @param {string | AuthTokenProvider | undefined} [opts.basicAuthPassword=process.env["BASIC_AUTH_PASSWORD"] ?? undefined]
-   * @param {string | AuthTokenProvider | undefined} [opts.apiKeyHeader=process.env["API_KEY_HEADER"] ?? undefined]
-   * @param {string | AuthTokenProvider | undefined} [opts.apiKeyQuery=process.env["API_KEY_QUERY"] ?? undefined]
-   * @param {string | AuthTokenProvider | undefined} [opts.apiKeyCookie=process.env["API_KEY_COOKIE"] ?? undefined]
-   * @param {string | AuthTokenProvider | undefined} [opts.oAuth2=process.env["SCALAR_O_AUTH2"] ?? undefined]
-   * @param {string | AuthTokenProvider | undefined} [opts.openIDConnect=process.env["SCALAR_OPEN_ID_CONNECT"] ?? undefined]
-   * @param {string | null | undefined} [opts.webhookSecret=process.env["SCALAR_WEBHOOK_SECRET"] ?? null]
+   * @param {string | AuthTokenProvider | null | undefined} [opts.bearerAuth=process.env["BEARER_AUTH"] ?? null]
+   * @param {string | AuthTokenProvider | null | undefined} [opts.basicAuthUsername=process.env["BASIC_AUTH_USERNAME"] ?? null]
+   * @param {string | AuthTokenProvider | null | undefined} [opts.basicAuthPassword=process.env["BASIC_AUTH_PASSWORD"] ?? null]
+   * @param {string | AuthTokenProvider | null | undefined} [opts.apiKeyHeader=process.env["API_KEY_HEADER"] ?? null]
+   * @param {string | AuthTokenProvider | null | undefined} [opts.apiKeyCookie=process.env["API_KEY_COOKIE"] ?? null]
+   * @param {string | AuthTokenProvider | null | undefined} [opts.oAuth2=process.env["O_AUTH2"] ?? null]
+   * @param {string | AuthTokenProvider | null | undefined} [opts.openIDConnect=process.env["OPEN_ID_CONNECT"] ?? null]
+   * @param {string | AuthTokenProvider | undefined} [opts.apiKeyQuery=process.env["SCALAR_69_T4_L_API_KEY_QUERY"] ?? undefined]
+   * @param {string | null | undefined} [opts.webhookSecret=process.env["SCALAR_69_T4_L_WEBHOOK_SECRET"] ?? null]
    * @param {Environment} [opts.environment=production] - Specifies the environment URL to use for the API.
-   * @param {string} [opts.baseURL=process.env["SCALAR_BASE_URL"] ?? https://galaxy.scalar.com] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env["SCALAR_69_T4_L_BASE_URL"] ?? https://galaxy.scalar.com] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -209,16 +236,16 @@ export class Galaxy {
    * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
    */
   constructor({
-    baseURL = readEnv("SCALAR_BASE_URL"),
-    bearerAuth = readEnv("BEARER_AUTH"),
-    basicAuthUsername = readEnv("BASIC_AUTH_USERNAME"),
-    basicAuthPassword = readEnv("BASIC_AUTH_PASSWORD"),
-    apiKeyHeader = readEnv("API_KEY_HEADER"),
-    apiKeyQuery = readEnv("API_KEY_QUERY"),
-    apiKeyCookie = readEnv("API_KEY_COOKIE"),
-    oAuth2 = readEnv("SCALAR_O_AUTH2"),
-    openIDConnect = readEnv("SCALAR_OPEN_ID_CONNECT"),
-    webhookSecret = readEnv("SCALAR_WEBHOOK_SECRET") ?? null,
+    baseURL = readEnv('SCALAR_69_T4_L_BASE_URL'),
+    bearerAuth = readEnv('BEARER_AUTH') ?? null,
+    basicAuthUsername = readEnv('BASIC_AUTH_USERNAME') ?? null,
+    basicAuthPassword = readEnv('BASIC_AUTH_PASSWORD') ?? null,
+    apiKeyHeader = readEnv('API_KEY_HEADER') ?? null,
+    apiKeyCookie = readEnv('API_KEY_COOKIE') ?? null,
+    oAuth2 = readEnv('O_AUTH2') ?? null,
+    openIDConnect = readEnv('OPEN_ID_CONNECT') ?? null,
+    apiKeyQuery = readEnv('SCALAR_69_T4_L_API_KEY_QUERY'),
+    webhookSecret = readEnv('SCALAR_69_T4_L_WEBHOOK_SECRET') ?? null,
     ...opts
   }: ClientOptions = {}) {
     const options: ClientOptions = {
@@ -226,34 +253,37 @@ export class Galaxy {
       basicAuthUsername,
       basicAuthPassword,
       apiKeyHeader,
-      apiKeyQuery,
       apiKeyCookie,
       oAuth2,
       openIDConnect,
+      apiKeyQuery,
       webhookSecret,
       ...opts,
       baseURL: baseURL || null,
     };
-    const environment = options.environment ?? "production";
-    const baseURLOverridden = baseURL !== null && baseURL !== undefined && baseURL !== "";
-    if (baseURLOverridden && options.environment) throw new Errors.GalaxyError("Ambiguous URL; The `baseURL` option (or SCALAR_BASE_URL env var) and the `environment` option are given. If you want to use the environment you must pass baseURL: null");
+    const environment = options.environment ?? 'production';
+    const baseURLOverridden = baseURL !== null && baseURL !== undefined && baseURL !== '';
+    if (baseURLOverridden && options.environment)
+      throw new Errors.ApiTestError(
+        'Ambiguous URL; The `baseURL` option (or SCALAR_69_T4_L_BASE_URL env var) and the `environment` option are given. If you want to use the environment you must pass baseURL: null',
+      );
     const defaultBaseURL = environments[environment];
     this.baseURL = options.baseURL || defaultBaseURL;
-    this.timeout = options.timeout ?? Galaxy.DEFAULT_TIMEOUT /* 1 minute */;
+    this.timeout = options.timeout ?? ApiTest.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
     // Set default logLevel early so that we can log a warning in parseLogLevel.
     this.logLevel = defaultLogLevel;
     this.logLevel =
       parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
-      parseLogLevel(readEnv("SCALAR_LOG"), "process.env[\"SCALAR_LOG\"]", this) ??
+      parseLogLevel(readEnv('SCALAR_69_T4_L_LOG'), 'process.env["SCALAR_69_T4_L_LOG"]', this) ??
       defaultLogLevel;
     this.fetchOptions = options.fetchOptions;
     this.maxRetries = options.maxRetries ?? 2;
     this.fetch = options.fetch ?? Shims.getDefaultFetch();
     this.#encoder = Opts.FallbackEncoder;
 
-    const customHeadersEnv = readEnv("SCALAR_CUSTOM_HEADERS");
+    const customHeadersEnv = readEnv('SCALAR_69_T4_L_CUSTOM_HEADERS');
     if (customHeadersEnv) {
       const parsed: Record<string, string> = {};
       for (const line of customHeadersEnv.split('\n')) {
@@ -273,10 +303,10 @@ export class Galaxy {
     this.basicAuthUsername = basicAuthUsername;
     this.basicAuthPassword = basicAuthPassword;
     this.apiKeyHeader = apiKeyHeader;
-    this.apiKeyQuery = apiKeyQuery;
     this.apiKeyCookie = apiKeyCookie;
     this.oAuth2 = oAuth2;
     this.openIDConnect = openIDConnect;
+    this.apiKeyQuery = apiKeyQuery;
     this.webhookSecret = webhookSecret;
   }
 
@@ -290,7 +320,8 @@ export class Galaxy {
     // constructor default that would re-read the base-URL env var and be ambiguous all over again.
     const inheritedBaseURL = this.#baseURLOverridden() ? this.baseURL : undefined;
     const inheritedEnvironment = inheritedBaseURL ? undefined : this._options.environment;
-    const nextBaseURL = options.baseURL !== undefined ? options.baseURL : (options.environment ? null : inheritedBaseURL);
+    const nextBaseURL =
+      options.baseURL !== undefined ? options.baseURL : options.environment ? null : inheritedBaseURL;
     const nextEnvironment = options.environment ?? (options.baseURL ? undefined : inheritedEnvironment);
     const client = new (this.constructor as new (props: ClientOptions) => this)({
       ...this._options,
@@ -304,10 +335,10 @@ export class Galaxy {
       basicAuthUsername: this.basicAuthUsername,
       basicAuthPassword: this.basicAuthPassword,
       apiKeyHeader: this.apiKeyHeader,
-      apiKeyQuery: this.apiKeyQuery,
       apiKeyCookie: this.apiKeyCookie,
       oAuth2: this.oAuth2,
       openIDConnect: this.openIDConnect,
+      apiKeyQuery: this.apiKeyQuery,
       webhookSecret: this.webhookSecret,
       ...options,
       baseURL: nextBaseURL,
@@ -354,10 +385,11 @@ export class Galaxy {
     const baseURL = (!this.#baseURLOverridden() && defaultBaseURL) || this.baseURL;
     // Guarantee exactly one "/" between baseURL and path so that bases without a trailing slash
     // and paths without a leading slash do not fuse into a malformed URL (e.g. ".../v1" + "widgets").
-    const url =
-      isAbsoluteURL(path) ?
-        new URL(path)
-      : new URL((baseURL.endsWith('/') ? baseURL : baseURL + '/') + (path.startsWith('/') ? path.slice(1) : path));
+    const url = isAbsoluteURL(path)
+      ? new URL(path)
+      : new URL(
+          (baseURL.endsWith('/') ? baseURL : baseURL + '/') + (path.startsWith('/') ? path.slice(1) : path),
+        );
 
     const defaultQuery = this.defaultQuery();
     const pathQuery = Object.fromEntries(url.searchParams);
@@ -365,7 +397,7 @@ export class Galaxy {
       query = { ...pathQuery, ...defaultQuery, ...query };
     }
 
-    if (typeof query === "object" && query && !Array.isArray(query)) {
+    if (typeof query === 'object' && query && !Array.isArray(query)) {
       url.search = this.stringifyQuery(query);
     }
 
@@ -584,7 +616,12 @@ export class Galaxy {
     return { response, options, controller, requestLogID, retryOfRequestLogID, startTime };
   }
 
-  async fetchWithTimeout(url: RequestInfo, init: RequestInit | undefined, ms: number, controller: AbortController): Promise<Response> {
+  async fetchWithTimeout(
+    url: RequestInfo,
+    init: RequestInit | undefined,
+    ms: number,
+    controller: AbortController,
+  ): Promise<Response> {
     const { signal, method, ...options } = init || {};
     const abort = this._makeAbort(controller);
     if (signal) signal.addEventListener('abort', abort, { once: true });
@@ -708,11 +745,24 @@ export class Galaxy {
     const options = { ...inputOptions };
     const { method, path, query, defaultBaseURL } = options;
 
-    const url = this.buildURL(path!, { ...await this.authQueryAsync(), ...((query as Record<string, unknown>) ?? {}) }, defaultBaseURL);
+    const url = this.buildURL(
+      path!,
+      { ...(await this.authQueryAsync()), ...((query as Record<string, unknown>) ?? {}) },
+      defaultBaseURL,
+    );
     if ('timeout' in options) validatePositiveInteger('timeout', options.timeout);
     options.timeout = options.timeout ?? this.timeout;
     const { bodyHeaders, body } = this.buildBody({ options });
-    const reqHeaders = await this.buildHeaders({ options, method, bodyHeaders, retryCount, url });
+    // Headers read the caller's own options, not the copy defaulted above: `X-Scalar-Timeout`
+    // reports an explicit per-request timeout, and the idempotency key written back here has to
+    // land where the retry can see it.
+    const reqHeaders = await this.buildHeaders({
+      options: inputOptions,
+      method,
+      bodyHeaders,
+      retryCount,
+      url,
+    });
 
     const req: FinalizedRequestInit = {
       method,
@@ -827,88 +877,138 @@ export class Galaxy {
     }
   }
 
-  private validateAuth(url: string, headers: Headers, options: FinalRequestOptions): void {
-    if (headers.has("Authorization")) return;
-    if (headerExplicitlyOmitted(options.headers, "Authorization")) return;
-    throw new Errors.AuthenticationError(401, {}, "Could not resolve authentication method. Expected Authorization to be set.", headers);
+  protected validateAuth(url: string, headers: Headers, options: FinalRequestOptions): void {
+    if (headers.has('Authorization')) return;
+    if (headerExplicitlyOmitted(options.headers, 'Authorization')) return;
+    if (headers.has('X-API-Key')) return;
+    if (headerExplicitlyOmitted(options.headers, 'X-API-Key')) return;
+    if (cookieHeaderHas(headers.get('Cookie'), 'api_key')) return;
+    if (new URL(url).searchParams.has('api_key')) return;
+    throw new Errors.AuthenticationError(
+      401,
+      undefined,
+      'Could not resolve authentication method. Expected either bearerAuth, both basicAuthUsername and basicAuthPassword, oAuth2, openIDConnect, apiKeyHeader, apiKeyCookie or apiKeyQuery to be set. Or for one of the "Authorization" or "X-API-Key" headers to be explicitly omitted',
+      headers,
+    );
   }
 
   authHeadersSync(): Record<string, string> {
     const headers: Record<string, string> = {};
-    const bearerAuth = this.resolveAuthOptionSync("bearerAuth", this.bearerAuth);
+    const bearerAuth = this.resolveAuthOptionSync('bearerAuth', this.bearerAuth);
     if (bearerAuth) headers['Authorization'] = `Bearer ${bearerAuth}`;
-    const apiKeyHeader = this.resolveAuthOptionSync("apiKeyHeader", this.apiKeyHeader);
-    if (apiKeyHeader) headers["X-API-Key"] = apiKeyHeader;
-    const oAuth2 = this.resolveAuthOptionSync("oAuth2", this.oAuth2);
+    const apiKeyHeader = this.resolveAuthOptionSync('apiKeyHeader', this.apiKeyHeader);
+    if (apiKeyHeader) headers['X-API-Key'] = apiKeyHeader;
+    const oAuth2 = this.resolveAuthOptionSync('oAuth2', this.oAuth2);
     if (oAuth2) headers['Authorization'] = `Bearer ${oAuth2}`;
-    const openIDConnect = this.resolveAuthOptionSync("openIDConnect", this.openIDConnect);
+    const openIDConnect = this.resolveAuthOptionSync('openIDConnect', this.openIDConnect);
     if (openIDConnect) headers['Authorization'] = `Bearer ${openIDConnect}`;
-    const basicAuthUsername = this.resolveAuthOptionSync("basicAuthUsername", this.basicAuthUsername);
-    const basicAuthPassword = this.resolveAuthOptionSync("basicAuthPassword", this.basicAuthPassword);
-    if (basicAuthUsername != null && basicAuthPassword != null) headers['Authorization'] = `Basic ${toBase64(`${basicAuthUsername}:${basicAuthPassword}`)}`;
+    const basicAuthUsername = this.resolveAuthOptionSync('basicAuthUsername', this.basicAuthUsername);
+    const basicAuthPassword = this.resolveAuthOptionSync('basicAuthPassword', this.basicAuthPassword);
+    if (basicAuthUsername != null && basicAuthPassword != null)
+      headers['Authorization'] = `Basic ${toBase64(`${basicAuthUsername}:${basicAuthPassword}`)}`;
     return headers;
   }
 
   webSocketAuthHeaders(): Record<string, string> {
-    const bearerAuth = this.resolveAuthOptionSync("bearerAuth", this.bearerAuth);
+    const bearerAuth = this.resolveAuthOptionSync('bearerAuth', this.bearerAuth);
     if (bearerAuth) return { Authorization: `Bearer ${bearerAuth}` };
-    const apiKeyHeader = this.resolveAuthOptionSync("apiKeyHeader", this.apiKeyHeader);
-    if (apiKeyHeader) return { "X-API-Key": apiKeyHeader };
+    const apiKeyHeader = this.resolveAuthOptionSync('apiKeyHeader', this.apiKeyHeader);
+    if (apiKeyHeader) return { 'X-API-Key': apiKeyHeader };
     return {};
   }
 
-  protected async authHeaders(options: FinalRequestOptions): Promise<HeadersLike | undefined> {
-    return buildHeaders([await this.authHeadersAsync()]);
+  protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    return buildHeaders([
+      await this.bearerAuth2(opts),
+      await this.apiKeyHeaderAuth(opts),
+      await this.oAuth2Auth(opts),
+      await this.openIDConnectAuth(opts),
+      await this.basicAuth(opts),
+    ]);
+  }
+
+  protected async bearerAuth2(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    const bearerAuth = await this.resolveAuthOption('bearerAuth', this.bearerAuth);
+    if (bearerAuth == null) {
+      return undefined;
+    }
+    return buildHeaders([{ Authorization: `Bearer ${bearerAuth}` }]);
+  }
+
+  protected async apiKeyHeaderAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    const apiKeyHeader = await this.resolveAuthOption('apiKeyHeader', this.apiKeyHeader);
+    if (apiKeyHeader == null) {
+      return undefined;
+    }
+    return buildHeaders([{ 'X-API-Key': apiKeyHeader }]);
+  }
+
+  protected async oAuth2Auth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    const oAuth2 = await this.resolveAuthOption('oAuth2', this.oAuth2);
+    if (oAuth2 == null) {
+      return undefined;
+    }
+    return buildHeaders([{ Authorization: `Bearer ${oAuth2}` }]);
+  }
+
+  protected async openIDConnectAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    const openIDConnect = await this.resolveAuthOption('openIDConnect', this.openIDConnect);
+    if (openIDConnect == null) {
+      return undefined;
+    }
+    return buildHeaders([{ Authorization: `Bearer ${openIDConnect}` }]);
+  }
+
+  protected async basicAuth(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    const basicAuthUsername = await this.resolveAuthOption('basicAuthUsername', this.basicAuthUsername);
+    const basicAuthPassword = await this.resolveAuthOption('basicAuthPassword', this.basicAuthPassword);
+    if (basicAuthUsername == null || basicAuthPassword == null) {
+      return undefined;
+    }
+    return buildHeaders([
+      { Authorization: `Basic ${toBase64(`${basicAuthUsername}:${basicAuthPassword}`)}` },
+    ]);
   }
 
   private async authQueryAsync(): Promise<Record<string, string>> {
     const query: Record<string, string> = {};
-    const apiKeyQuery = await this.resolveAuthOption("apiKeyQuery", this.apiKeyQuery);
-    if (apiKeyQuery) query["api_key"] = apiKeyQuery;
+    const apiKeyQuery = await this.resolveAuthOption('apiKeyQuery', this.apiKeyQuery);
+    if (apiKeyQuery) query['api_key'] = apiKeyQuery;
     return query;
   }
 
   private async authCookiesAsync(): Promise<Record<string, string>> {
     const cookies: Record<string, string> = {};
-    const apiKeyCookie = await this.resolveAuthOption("apiKeyCookie", this.apiKeyCookie);
-    if (apiKeyCookie) cookies["api_key"] = apiKeyCookie;
+    const apiKeyCookie = await this.resolveAuthOption('apiKeyCookie', this.apiKeyCookie);
+    if (apiKeyCookie) cookies['api_key'] = apiKeyCookie;
     return cookies;
   }
 
-  private async authHeadersAsync(): Promise<Record<string, string>> {
-    const headers: Record<string, string> = {};
-    const bearerAuth = await this.resolveAuthOption("bearerAuth", this.bearerAuth);
-    if (bearerAuth) headers['Authorization'] = `Bearer ${bearerAuth}`;
-    const apiKeyHeader = await this.resolveAuthOption("apiKeyHeader", this.apiKeyHeader);
-    if (apiKeyHeader) headers["X-API-Key"] = apiKeyHeader;
-    const oAuth2 = await this.resolveAuthOption("oAuth2", this.oAuth2);
-    if (oAuth2) headers['Authorization'] = `Bearer ${oAuth2}`;
-    const openIDConnect = await this.resolveAuthOption("openIDConnect", this.openIDConnect);
-    if (openIDConnect) headers['Authorization'] = `Bearer ${openIDConnect}`;
-    const basicAuthUsername = await this.resolveAuthOption("basicAuthUsername", this.basicAuthUsername);
-    const basicAuthPassword = await this.resolveAuthOption("basicAuthPassword", this.basicAuthPassword);
-    if (basicAuthUsername != null && basicAuthPassword != null) headers['Authorization'] = `Basic ${toBase64(`${basicAuthUsername}:${basicAuthPassword}`)}`;
-    return headers;
-  }
-
-  private async resolveAuthOption(optionName: string, value: string | AuthTokenProvider | null | undefined): Promise<string | undefined> {
+  private async resolveAuthOption(
+    optionName: string,
+    value: string | AuthTokenProvider | null | undefined,
+  ): Promise<string | undefined> {
     if (value == null) return undefined;
-    const token = typeof value === "function" ? await value() : value;
-    if (!token) throw new Errors.GalaxyError(`Expected '${optionName}' to resolve to a non-empty string.`);
+    const token = typeof value === 'function' ? await value() : value;
+    if (!token) throw new Errors.ApiTestError(`Expected '${optionName}' to resolve to a non-empty string.`);
     return token;
   }
 
-  private resolveAuthOptionSync(optionName: string, value: string | AuthTokenProvider | null | undefined): string | undefined {
+  private resolveAuthOptionSync(
+    optionName: string,
+    value: string | AuthTokenProvider | null | undefined,
+  ): string | undefined {
     if (value == null) return undefined;
-    const token = typeof value === "function" ? value() : value;
-    if (typeof token !== "string" || !token) throw new Errors.GalaxyError(`Expected '${optionName}' to resolve to a non-empty string.`);
+    const token = typeof value === 'function' ? value() : value;
+    if (typeof token !== 'string' || !token)
+      throw new Errors.ApiTestError(`Expected '${optionName}' to resolve to a non-empty string.`);
     return token;
   }
 
-  static Galaxy = this;
+  static ApiTest = this;
   static DEFAULT_TIMEOUT = 60000; // 1 minute
 
-  static GalaxyError = Errors.GalaxyError;
+  static ApiTestError = Errors.ApiTestError;
   static APIError = Errors.APIError;
   static APIConnectionError = Errors.APIConnectionError;
   static APIConnectionTimeoutError = Errors.APIConnectionTimeoutError;
@@ -930,19 +1030,21 @@ export class Galaxy {
   webhooks: Webhooks = new Webhooks(this);
 }
 
-Galaxy.Planets = Planets;
-Galaxy.CelestialBodies = CelestialBodies;
-Galaxy.Authentication = Authentication;
-Galaxy.Webhooks = Webhooks;
+ApiTest.Planets = Planets;
+ApiTest.CelestialBodies = CelestialBodies;
+ApiTest.Authentication = Authentication;
+ApiTest.Webhooks = Webhooks;
 
-export declare namespace Galaxy {
+export declare namespace ApiTest {
   export type RequestOptions = Opts.RequestOptions;
   export {
     Planets as Planets,
     type Planet as Planet,
-    type PlanetListAllDataResponse as PlanetListAllDataResponse,
+    type PaginatedResource as PaginatedResource,
+    type Satellite as Satellite,
+    type PlanetListResponse as PlanetListResponse,
     type PlanetUploadImageResponse as PlanetUploadImageResponse,
-    type PlanetListAllDataParams as PlanetListAllDataParams,
+    type PlanetListParams as PlanetListParams,
     type PlanetCreateParams as PlanetCreateParams,
     type PlanetUpdateParams as PlanetUpdateParams,
     type PlanetUploadImageParams as PlanetUploadImageParams,
@@ -957,8 +1059,7 @@ export declare namespace Galaxy {
   export {
     Authentication as Authentication,
     type User as User,
-    type Credentials as Credentials,
-    type AuthenticationCreateTokenResponse as AuthenticationCreateTokenResponse,
+    type Token as Token,
     type AuthenticationCreateUserParams as AuthenticationCreateUserParams,
     type AuthenticationCreateTokenParams as AuthenticationCreateTokenParams,
   };
@@ -970,7 +1071,6 @@ export declare namespace Galaxy {
   };
 }
 
-
 const headerExplicitlyOmitted = (source: HeadersLike | undefined, name: string): boolean => {
   if (!source || Array.isArray(source) || source instanceof Headers) return false;
   const target = name.toLowerCase();
@@ -979,16 +1079,15 @@ const headerExplicitlyOmitted = (source: HeadersLike | undefined, name: string):
 
 const appendAuthCookies = (headers: Headers, cookies: Record<string, string>): void => {
   for (const [name, value] of Object.entries(cookies)) {
-    if (cookieHeaderHas(headers.get("Cookie"), name)) continue;
-    const cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
-    const existing = headers.get("Cookie");
-    headers.set("Cookie", existing ? existing + "; " + cookie : cookie);
+    if (cookieHeaderHas(headers.get('Cookie'), name)) continue;
+    const cookie = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+    const existing = headers.get('Cookie');
+    headers.set('Cookie', existing ? existing + '; ' + cookie : cookie);
   }
 };
 
 const cookieHeaderHas = (value: string | null, name: string): boolean => {
   if (!value) return false;
-  const target = encodeURIComponent(name) + "=";
-  return value.split(";").some((cookie) => cookie.trim().startsWith(target));
+  const target = encodeURIComponent(name) + '=';
+  return value.split(';').some((cookie) => cookie.trim().startsWith(target));
 };
-

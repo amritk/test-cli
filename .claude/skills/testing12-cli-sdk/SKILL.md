@@ -35,7 +35,7 @@ testing12 [resource] [command] [flags]
 testing12 planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
 ```
 
-Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](./api.md) before writing a call.
+Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](../../../api.md) before writing a call.
 
 ## Error handling
 
@@ -55,5 +55,5 @@ Failed requests print a structured error to standard error and exit with a statu
 
 ## Reference files
 
-- [README.md](./README.md) — full feature tour: client options, retries and timeouts, logging.
-- [api.md](./api.md) — complete catalogue of every operation with request and response types.
+- [README.md](../../../README.md) — full feature tour: client options, retries and timeouts, logging.
+- [api.md](../../../api.md) — complete catalogue of every operation with request and response types.
