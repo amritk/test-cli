@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.0](https://github.com/amritk/test-cli/compare/v0.3.1...v0.4.0) (2026-09-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** 3 breaking changes to the SDK surface.
+    - Renamed SDK from `Galaxy` to `Testing12`.
+    - URL of environment `responds_with_your_request_data` changed from `{protocol}://void.scalar.com/{path}` to `https://void.scalar.com/{path}`.
+    - Removed operation `planets.listAllData` (`GET /planets`).
+
+### Features
+
+* **api:** update SDK name (+5 more changes) ([645a123](https://github.com/amritk/test-cli/commit/645a1231146c2554172a39bfb817383d337d1f27))
+
+
+### Chores
+
+* **api:** regenerate SDK ([b66fefe](https://github.com/amritk/test-cli/commit/b66fefe67e95c29094829ef55e1afffba09131c9))
+
 ## [0.3.1](https://github.com/amritk/test-cli/compare/v0.3.0...v0.3.1) (2026-07-31)
 
 
