@@ -1,48 +1,54 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from "../resource";
-import { APIPromise } from "../api-promise";
-import type { RequestOptions } from "../internal/request-options";
-import { buildHeaders } from "../internal/headers";
-import { multipartFormRequestOptions } from "../internal/uploads";
-import { path as __scalarPath } from "../internal/utils/path";
-import type { Uploadable } from "../core/uploads";
-import type * as AuthenticationAPI from "./authentication";
+import { APIResource } from '../resource';
+import { APIPromise } from '../api-promise';
+import type { RequestOptions } from '../internal/request-options';
+import { buildHeaders } from '../internal/headers';
+import { multipartFormRequestOptions } from '../internal/uploads';
+import { path as __scalarPath } from '../internal/utils/path';
+import type { Uploadable } from '../core/uploads';
+import type * as AuthenticationAPI from './authentication';
 
 export class Planets extends APIResource {
   /**
    * It's easy to say you know them all, but do you really? Retrieve all the planets and check whether you missed one.
    *
-   * @param {PlanetListAllDataParams} [query] - The parameters to send with the request.
+   * @param {PlanetListParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<PlanetListAllDataResponse>} OK
+   * @returns {APIPromise<PlanetListResponse>} OK
    *
    * @example
    * ```ts
-   * const listAllData = await client.planets.listAllData({
+   * const planet = await client.planets.list({
    *   limit: 10,
    *   offset: 0,
    * });
    * ```
    */
-  listAllData(query: PlanetListAllDataParams | null | undefined = {}, options?: RequestOptions): APIPromise<PlanetListAllDataResponse> {
-    return this._client.get("/planets", { query, ...options });
+  list(
+    query: PlanetListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PlanetListResponse> {
+    return this._client.get('/planets', { query, ...options });
   }
 
   /**
    * Time to play god and create a new planet. What do you think? Ah, don't think too much. What could go wrong anyway?
    *
-   * @param {PlanetCreateParams} [body] - The request body to send.
+   * @param {PlanetCreateParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<Planet>} Created
    *
    * @example
    * ```ts
-   * const planet = await client.planets.create();
+   * const planet = await client.planets.create({
+   *   name: 'Mars',
+   *   type: 'terrestrial',
+   * });
    * ```
    */
-  create(body: PlanetCreateParams | null | undefined = undefined, options?: RequestOptions): APIPromise<Planet> {
-    return this._client.post("/planets", { body, ...options });
+  create(body: PlanetCreateParams, options?: RequestOptions): APIPromise<Planet> {
+    return this._client.post('/planets', { body, ...options });
   }
 
   /**
@@ -65,16 +71,19 @@ export class Planets extends APIResource {
    * Sometimes you make mistakes, that's fine. No worries, you can update all planets.
    *
    * @param {number} planetID - The ID of the planet to get
-   * @param {PlanetUpdateParams} [body] - The request body to send.
+   * @param {PlanetUpdateParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<Planet>} OK
    *
    * @example
    * ```ts
-   * const planet = await client.planets.update(1);
+   * const planet = await client.planets.update(1, {
+   *   name: 'Mars',
+   *   type: 'terrestrial',
+   * });
    * ```
    */
-  update(planetID: number, body: PlanetUpdateParams | null | undefined = undefined, options?: RequestOptions): APIPromise<Planet> {
+  update(planetID: number, body: PlanetUpdateParams, options?: RequestOptions): APIPromise<Planet> {
     return this._client.put(__scalarPath`/planets/${planetID}`, { body, ...options });
   }
 
@@ -91,7 +100,10 @@ export class Planets extends APIResource {
    * ```
    */
   delete(planetID: number, options?: RequestOptions): APIPromise<void> {
-    return this._client.delete(__scalarPath`/planets/${planetID}`, { ...options, headers: buildHeaders([{ Accept: "*/*" }, options?.headers]) });
+    return this._client.delete(__scalarPath`/planets/${planetID}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 
   /**
@@ -104,11 +116,18 @@ export class Planets extends APIResource {
    *
    * @example
    * ```ts
-   * const uploadImage = await client.planets.uploadImage(1);
+   * const planet = await client.planets.uploadImage(1);
    * ```
    */
-  uploadImage(planetID: number, body: PlanetUploadImageParams | null | undefined = {}, options?: RequestOptions): APIPromise<PlanetUploadImageResponse> {
-    return this._client.post(__scalarPath`/planets/${planetID}/image`, multipartFormRequestOptions({ body, ...options }, this._client));
+  uploadImage(
+    planetID: number,
+    body: PlanetUploadImageParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<PlanetUploadImageResponse> {
+    return this._client.post(
+      __scalarPath`/planets/${planetID}/image`,
+      multipartFormRequestOptions({ body, ...options }, this._client),
+    );
   }
 }
 
@@ -121,7 +140,7 @@ export interface Planet {
    */
   id: number;
   name: string;
-  type: "planet" | "terrestrial" | "gas_giant" | "ice_giant" | "dwarf" | "super_earth";
+  type: 'planet' | 'terrestrial' | 'gas_giant' | 'ice_giant' | 'dwarf' | 'super_earth';
   description?: string | null;
   /**
    * A score from 0 to 1 indicating potential habitability
@@ -140,7 +159,7 @@ export interface Planet {
    */
   discoveredAt?: string;
   image?: string | null;
-  satellites?: Array<Planet.Satellite>;
+  satellites?: Array<Satellite>;
   /**
    * A user
    */
@@ -209,65 +228,16 @@ export namespace Planet {
      */
     percentage?: number;
   }
-
-  export interface Satellite {
-    name: string;
-    type: "satellite" | "moon" | "asteroid" | "comet";
-    /**
-     * @format int64
-     */
-    id?: number;
-    description?: string | null;
-    /**
-     * Diameter in kilometers
-     * @format float
-     */
-    diameter?: number;
-    orbit?: Satellite.Orbit;
-  }
-
-  export namespace Satellite {
-    export interface Orbit {
-      /**
-       * The ID of the planet this satellite orbits
-       * @format int64
-       */
-      planetId?: number;
-      /**
-       * Orbital period in Earth days
-       * @format float
-       */
-      orbitalPeriod?: number;
-      /**
-       * Average distance from the planet in kilometers
-       * @format float
-       */
-      distance?: number;
-    }
-  }
 }
 
-export interface PlanetListAllDataParams {
-  /**
-   * The number of items to return
-   * @default 10
-   * @format int64
-   */
-  limit?: number;
-  /**
-   * The number of items to skip before starting to collect the result set
-   * @default 0
-   * @format int64
-   */
-  offset?: number;
+/**
+ * A paginated resource
+ */
+export interface PaginatedResource {
+  meta?: PaginatedResource.Meta;
 }
 
-export interface PlanetListAllDataResponse {
-  data?: Array<Planet>;
-  meta?: PlanetListAllDataResponse.Meta;
-}
-
-export namespace PlanetListAllDataResponse {
+export namespace PaginatedResource {
   export interface Meta {
     /**
      * @format int64
@@ -285,9 +255,67 @@ export namespace PlanetListAllDataResponse {
   }
 }
 
+/**
+ * Every satellite in the Scalar Galaxy
+ */
+export interface Satellite {
+  name: string;
+  type: 'satellite' | 'moon' | 'asteroid' | 'comet';
+  /**
+   * @format int64
+   */
+  id?: number;
+  description?: string | null;
+  /**
+   * Diameter in kilometers
+   * @format float
+   */
+  diameter?: number;
+  orbit?: Satellite.Orbit;
+}
+
+export namespace Satellite {
+  export interface Orbit {
+    /**
+     * The ID of the planet this satellite orbits
+     * @format int64
+     */
+    planetId?: number;
+    /**
+     * Orbital period in Earth days
+     * @format float
+     */
+    orbitalPeriod?: number;
+    /**
+     * Average distance from the planet in kilometers
+     * @format float
+     */
+    distance?: number;
+  }
+}
+
+export interface PlanetListParams {
+  /**
+   * The number of items to return
+   * @default 10
+   * @format int64
+   */
+  limit?: number;
+  /**
+   * The number of items to skip before starting to collect the result set
+   * @default 0
+   * @format int64
+   */
+  offset?: number;
+}
+
+export interface PlanetListResponse extends PaginatedResource {
+  data?: Array<Planet>;
+}
+
 export interface PlanetCreateParams {
   name: string;
-  type: "planet" | "terrestrial" | "gas_giant" | "ice_giant" | "dwarf" | "super_earth";
+  type: 'planet' | 'terrestrial' | 'gas_giant' | 'ice_giant' | 'dwarf' | 'super_earth';
   description?: string | null;
   /**
    * A score from 0 to 1 indicating potential habitability
@@ -306,7 +334,7 @@ export interface PlanetCreateParams {
    */
   discoveredAt?: string;
   image?: string | null;
-  satellites?: Array<PlanetCreateParams.Satellite>;
+  satellites?: Array<Satellite>;
   /**
    * A user
    */
@@ -371,43 +399,11 @@ export namespace PlanetCreateParams {
      */
     percentage?: number;
   }
-
-  export interface Satellite {
-    name: string;
-    type: "satellite" | "moon" | "asteroid" | "comet";
-    description?: string | null;
-    /**
-     * Diameter in kilometers
-     * @format float
-     */
-    diameter?: number;
-    orbit?: Satellite.Orbit;
-  }
-
-  export namespace Satellite {
-    export interface Orbit {
-      /**
-       * The ID of the planet this satellite orbits
-       * @format int64
-       */
-      planetId?: number;
-      /**
-       * Orbital period in Earth days
-       * @format float
-       */
-      orbitalPeriod?: number;
-      /**
-       * Average distance from the planet in kilometers
-       * @format float
-       */
-      distance?: number;
-    }
-  }
 }
 
 export interface PlanetUpdateParams {
   name: string;
-  type: "planet" | "terrestrial" | "gas_giant" | "ice_giant" | "dwarf" | "super_earth";
+  type: 'planet' | 'terrestrial' | 'gas_giant' | 'ice_giant' | 'dwarf' | 'super_earth';
   description?: string | null;
   /**
    * A score from 0 to 1 indicating potential habitability
@@ -426,7 +422,7 @@ export interface PlanetUpdateParams {
    */
   discoveredAt?: string;
   image?: string | null;
-  satellites?: Array<PlanetUpdateParams.Satellite>;
+  satellites?: Array<Satellite>;
   /**
    * A user
    */
@@ -491,38 +487,6 @@ export namespace PlanetUpdateParams {
      */
     percentage?: number;
   }
-
-  export interface Satellite {
-    name: string;
-    type: "satellite" | "moon" | "asteroid" | "comet";
-    description?: string | null;
-    /**
-     * Diameter in kilometers
-     * @format float
-     */
-    diameter?: number;
-    orbit?: Satellite.Orbit;
-  }
-
-  export namespace Satellite {
-    export interface Orbit {
-      /**
-       * The ID of the planet this satellite orbits
-       * @format int64
-       */
-      planetId?: number;
-      /**
-       * Orbital period in Earth days
-       * @format float
-       */
-      orbitalPeriod?: number;
-      /**
-       * Average distance from the planet in kilometers
-       * @format float
-       */
-      distance?: number;
-    }
-  }
 }
 
 export interface PlanetUploadImageParams {
@@ -556,9 +520,11 @@ export interface PlanetUploadImageResponse {
 export declare namespace Planets {
   export {
     type Planet as Planet,
-    type PlanetListAllDataResponse as PlanetListAllDataResponse,
+    type PaginatedResource as PaginatedResource,
+    type Satellite as Satellite,
+    type PlanetListResponse as PlanetListResponse,
     type PlanetUploadImageResponse as PlanetUploadImageResponse,
-    type PlanetListAllDataParams as PlanetListAllDataParams,
+    type PlanetListParams as PlanetListParams,
     type PlanetCreateParams as PlanetCreateParams,
     type PlanetUpdateParams as PlanetUpdateParams,
     type PlanetUploadImageParams as PlanetUploadImageParams,

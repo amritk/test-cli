@@ -1,6 +1,6 @@
-# galaxy
+# testing 12
 
-This library provides convenient access to the galaxy REST API from the command line.
+This library provides convenient access to the testing 12 REST API from the command line.
 
 The full API of this library can be found in [api.md](./api.md).
 
@@ -26,8 +26,8 @@ The full API of this library can be found in [api.md](./api.md).
 ## Installation
 
 ```sh
-# Homebrew — standalone binary, no Node.js required
-brew install amritk/tap/galaxy
+# npm (requires Node.js)
+npm install -g testing-12-cli
 ```
 
 <br />
@@ -35,9 +35,9 @@ brew install amritk/tap/galaxy
 ## Usage
 
 ```sh
-galaxy [resource] [command] [flags]
+testing12 [resource] [command] [flags]
 
-galaxy planets list-all-data --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
+testing12 planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
 ```
 
 The examples in the following sections assume a `client` configured as shown above.
@@ -48,28 +48,28 @@ See the [API reference](./api.md) for every available operation.
 
 ## Shell Completion
 
-`galaxy completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
+`testing12 completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
 
 ```sh
 # bash (~/.bashrc)
-eval "$(galaxy completion bash)"
+eval "$(testing12 completion bash)"
 
 # zsh (~/.zshrc)
-eval "$(galaxy completion zsh)"
+eval "$(testing12 completion zsh)"
 
 # fish (~/.config/fish/config.fish)
-galaxy completion fish | source
+testing12 completion fish | source
 ```
 
 <br />
 
 ## Manual Pages
 
-Installing the package globally also installs man pages. `man galaxy` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
+Installing the package globally also installs man pages. `man testing12` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
 
 ```sh
-man galaxy
-man galaxy-<resource>-<command>
+man testing12
+man testing12-<resource>-<command>
 ```
 
 <br />
@@ -84,10 +84,10 @@ Pass credentials to the generated client constructor. Environment variables are 
 | `--basic-auth-username` | `string \| provider` | - | Basic HTTP authentication Defaults to BASIC_AUTH_USERNAME. |
 | `--basic-auth-password` | `string \| provider` | - | Basic HTTP authentication Defaults to BASIC_AUTH_PASSWORD. |
 | `--api-key-header` | `string \| provider` | - | API key request header Defaults to API_KEY_HEADER. |
-| `--api-key-query` | `string \| provider` | - | API key query parameter Defaults to API_KEY_QUERY. |
 | `--api-key-cookie` | `string \| provider` | - | API key browser cookie Defaults to API_KEY_COOKIE. |
-| `--o-auth2` | `string \| provider` | - | OAuth 2.0 authentication Defaults to SCALAR_O_AUTH2. |
-| `--open-id-connect` | `string \| provider` | - | OpenID Connect Authentication Defaults to SCALAR_OPEN_ID_CONNECT. |
+| `--o-auth2` | `string \| provider` | - | OAuth 2.0 authentication Defaults to O_AUTH2. |
+| `--open-id-connect` | `string \| provider` | - | OpenID Connect Authentication Defaults to OPEN_ID_CONNECT. |
+| `--api-key-query` | `string \| provider` | - | API key query parameter Defaults to SCALAR_69_T4_L_API_KEY_QUERY. |
 
 Declared schemes:
 
@@ -103,7 +103,7 @@ Declared schemes:
 
 ## Errors
 
-Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
+Failed requests print a structured error to standard error and exit with a status that identifies the failure class. The error body carries the API's own `message` plus a stable `code`, the HTTP `status`, the `requestId`, and — where one applies — an actionable `hint`. Usage errors (exit `2`) are reported as a plain message instead, since no request was made. Exit statuses: `0` success, `1` `error`, `2` `usage`, `10` `auth-failed`, `11` `not-found`, `12` `rate-limited`, `13` `client-error`, `14` `server-error`, `15` `connection-error`.
 
 Documented error statuses: `400`, `401`, `403`, `404`, `409`, `422`.
 
@@ -130,11 +130,13 @@ Generated clients support request timeouts and retry temporary failures such as 
 
 ## Helpers
 
-- `--format <format>` — output format: `auto`, `json`, `jsonl`, `pretty`, `raw`, or `yaml`.
-- `--format-error <format>` — error output format: `auto`, `json`, `jsonl`, `pretty`, `raw`, or `yaml`.
+- `--format <format>` — output format: `auto`, `json`, `jsonl`, `pretty`, `raw`, `toon`, or `yaml`.
+- `--format-error <format>` — error output format: `auto`, `json`, `jsonl`, `pretty`, `raw`, `toon`, or `yaml`.
+- `--format toon` — token-efficient structured output for AI agents; uniform lists collapse into one header plus a row per item, with a definitive item count.
 - `--transform <path>` and `--transform-error <path>` — dot-path transform for data/error output.
 - `--raw-output`, `-r` — print transformed string values without JSON quotes.
 - `--max-items <count>` — bound iterator, streaming, and WebSocket command output.
+- Errors carry a stable `code` and an actionable `hint` beside the API's own message, and each failure class exits with its own status: `1` `error`, `2` `usage`, `10` `auth-failed`, `11` `not-found`, `12` `rate-limited`, `13` `client-error`, `14` `server-error`, `15` `connection-error`.
 
 <br />
 
@@ -146,6 +148,6 @@ Generated clients support request timeouts and retry temporary failures such as 
 
 ## Requirements
 
-- None — the standalone binaries bundle their own runtime.
+- Node.js 20 or newer
 
 Powered by Scalar.
