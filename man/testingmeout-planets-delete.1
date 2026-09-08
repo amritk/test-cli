@@ -1,15 +1,17 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "TESTING12" "1" "" "testing12" "testing 12 Manual"
+.TH "TESTINGMEOUT\-PLANETS\-DELETE" "1" "" "testingmeout" "testing me out Manual"
 .SH "NAME"
-testing12 \- command line interface for the testing 12 REST API
+testingmeout\-planets\-delete \- Delete a planet
 .SH "SYNOPSIS"
-.B testing12
-[\fIglobal options\fR] \fIcommand\fR [\fIsubcommand\fR] [\fIarguments\fR] [\fIoptions\fR]
+.B testingmeout planets delete
+\fIplanet\-id\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-testing12 calls the testing 12 REST API from the command line. Commands are grouped by resource, and every command prints its result to standard output in the configured format.
-.PP
-The Scalar Galaxy is an example OpenAPI document to test OpenAPI tools and libraries. It's a fictional universe with fictional planets and fictional data. Get all the data for all planets.
-.SH "GLOBAL OPTIONS"
+This endpoint was used to delete planets. Unfortunately, that caused a lot of trouble for planets with life. So, this endpoint is now deprecated and should not be used anymore.
+.SH "ARGUMENTS"
+.TP
+\fIplanet\-id\fR, \fB\-\-planet\-id\fR \fI<value>\fR
+The ID of the planet to get. Required. Can also be supplied as \-\-planet\-id.
+.SH "OPTIONS"
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -61,48 +63,11 @@ OpenID Connect Authentication. Can also be set with the OPEN_ID_CONNECT environm
 .TP
 \fB\-\-api\-key\-query\fR \fI<value>\fR
 API key query parameter. Can also be set with the SCALAR_69_T4_L_API_KEY_QUERY environment variable.
-.SH "COMMANDS"
-.TP
-\fBtesting12 planets list\fR
-Get all planets. See testing12\-planets\-list(1).
-.TP
-\fBtesting12 planets create\fR
-Create a planet. See testing12\-planets\-create(1).
-.TP
-\fBtesting12 planets retrieve\fR
-Get a planet. See testing12\-planets\-retrieve(1).
-.TP
-\fBtesting12 planets update\fR
-Update a planet. See testing12\-planets\-update(1).
-.TP
-\fBtesting12 planets delete\fR
-Delete a planet. See testing12\-planets\-delete(1).
-.TP
-\fBtesting12 planets upload\-image\fR
-Upload an image to a planet. See testing12\-planets\-upload\-image(1).
-.TP
-\fBtesting12 celestial\-bodies create\fR
-Create a celestial body. See testing12\-celestial\-bodies\-create(1).
-.TP
-\fBtesting12 authentication create\-user\fR
-Create a user. See testing12\-authentication\-create\-user(1).
-.TP
-\fBtesting12 authentication create\-token\fR
-Get a token. See testing12\-authentication\-create\-token(1).
-.TP
-\fBtesting12 authentication list\-me\fR
-Get authenticated user. See testing12\-authentication\-list\-me(1).
-.TP
-\fBtesting12 completion\fR
-Print a shell completion script. See testing12\-completion(1).
-.SH "SHELL COMPLETION"
-testing12 completion <shell> prints a completion script for bash, zsh, and fish. Load it from your shell startup file:
+.SH "EXAMPLES"
 .PP
 .RS 4
 .nf
-eval "$(testing12 completion bash)"
-eval "$(testing12 completion zsh)"
-testing12 completion fish | source
+testingmeout planets delete '1' \-\-bearer\-auth "$BEARER_AUTH"
 .fi
 .RE
 .SH "ENVIRONMENT"
@@ -158,3 +123,5 @@ The API failed to handle the request (HTTP 5xx). Reported as server\-error.
 .TP
 \fB15\fR
 The API could not be reached, or the request timed out. Reported as connection\-error.
+.SH "SEE ALSO"
+.BR testingmeout (1)

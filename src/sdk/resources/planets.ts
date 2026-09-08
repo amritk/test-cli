@@ -186,11 +186,13 @@ export namespace Planet {
     /**
      * Mass in Earth masses (must be greater than 0)
      * @format float
+     * @exclusiveMinimum 0
      */
     mass?: number;
     /**
      * Radius in Earth radii (must be greater than 0)
      * @format float
+     * @exclusiveMinimum 0
      */
     radius?: number;
     /**
@@ -225,6 +227,7 @@ export namespace Planet {
     compound?: string;
     /**
      * @format float
+     * @exclusiveMaximum 100
      */
     percentage?: number;
   }
@@ -357,11 +360,13 @@ export namespace PlanetCreateParams {
     /**
      * Mass in Earth masses (must be greater than 0)
      * @format float
+     * @exclusiveMinimum 0
      */
     mass?: number;
     /**
      * Radius in Earth radii (must be greater than 0)
      * @format float
+     * @exclusiveMinimum 0
      */
     radius?: number;
     /**
@@ -396,6 +401,7 @@ export namespace PlanetCreateParams {
     compound?: string;
     /**
      * @format float
+     * @exclusiveMaximum 100
      */
     percentage?: number;
   }
@@ -445,11 +451,13 @@ export namespace PlanetUpdateParams {
     /**
      * Mass in Earth masses (must be greater than 0)
      * @format float
+     * @exclusiveMinimum 0
      */
     mass?: number;
     /**
      * Radius in Earth radii (must be greater than 0)
      * @format float
+     * @exclusiveMinimum 0
      */
     radius?: number;
     /**
@@ -484,6 +492,7 @@ export namespace PlanetUpdateParams {
     compound?: string;
     /**
      * @format float
+     * @exclusiveMaximum 100
      */
     percentage?: number;
   }

@@ -244,6 +244,7 @@ const commands = [
         description: 'Atmospheric composition',
         valueKind: 'array',
         repeatable: true,
+        itemKind: 'object',
       },
       {
         name: 'discovered-at',
@@ -269,6 +270,7 @@ const commands = [
         required: false,
         valueKind: 'array',
         repeatable: true,
+        itemKind: 'object',
       },
       {
         name: 'creator',
@@ -305,6 +307,7 @@ const commands = [
         required: false,
         valueKind: 'array',
         repeatable: true,
+        itemKind: 'string',
       },
       {
         name: 'success-callback-url',
@@ -489,6 +492,7 @@ const commands = [
         description: 'Atmospheric composition',
         valueKind: 'array',
         repeatable: true,
+        itemKind: 'object',
       },
       {
         name: 'discovered-at',
@@ -514,6 +518,7 @@ const commands = [
         required: false,
         valueKind: 'array',
         repeatable: true,
+        itemKind: 'object',
       },
       {
         name: 'creator',
@@ -550,6 +555,7 @@ const commands = [
         required: false,
         valueKind: 'array',
         repeatable: true,
+        itemKind: 'string',
       },
       {
         name: 'success-callback-url',
@@ -622,7 +628,7 @@ const commands = [
         location: 'body',
         required: false,
         description: 'The image file to upload',
-        valueKind: 'string',
+        valueKind: 'file',
       },
     ],
   },
@@ -720,9 +726,9 @@ const commands = [
 export const getProgram = (): Command =>
   createProgram({
     SDK,
-    binaryName: 'testing12',
+    binaryName: 'testingmeout',
     version: '0.3.1', // x-release-please-version
-    description: 'CLI for testing 12',
+    description: 'CLI for testing me out',
     defaultFormat: 'auto',
     defaultErrorFormat: 'auto',
     clientOptions,

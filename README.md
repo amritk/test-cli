@@ -1,6 +1,6 @@
-# testing 12
+# testing me out
 
-This library provides convenient access to the testing 12 REST API from the command line.
+This library provides convenient access to the testing me out REST API from the command line.
 
 The full API of this library can be found in [api.md](./api.md).
 
@@ -11,6 +11,7 @@ The full API of this library can be found in [api.md](./api.md).
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Reference](./api.md)
+- [File Arguments](#file-arguments)
 - [Shell Completion](#shell-completion)
 - [Manual Pages](#manual-pages)
 - [Authentication](#authentication)
@@ -27,7 +28,7 @@ The full API of this library can be found in [api.md](./api.md).
 
 ```sh
 # npm (requires Node.js)
-npm install -g testing-12-cli
+npm install -g testing-me-out-cli
 ```
 
 <br />
@@ -35,9 +36,9 @@ npm install -g testing-12-cli
 ## Usage
 
 ```sh
-testing12 [resource] [command] [flags]
+testingmeout [resource] [command] [flags]
 
-testing12 planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
+testingmeout planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
 ```
 
 The examples in the following sections assume a `client` configured as shown above.
@@ -46,30 +47,43 @@ See the [API reference](./api.md) for every available operation.
 
 <br />
 
+## File Arguments
+
+Any command flag or credential reads its value from a file when the value begins with `@`, so a body field holding a whole document does not have to survive shell quoting. `@file://` always sends the file as text and `@data://` always sends it base64-encoded; a bare `@` lets the file decide. A flag that uploads a file takes its path with or without the `@`. Escape a literal value that begins with `@` as `\@`. The global options (`--base-url`, `--timeout`, `--format` and the rest) are read exactly as written.
+
+```sh
+testingmeout COMMAND --FLAG @./body.json
+testingmeout COMMAND --FLAG @file://./notes.txt
+testingmeout COMMAND --FLAG @data://./logo.png
+testingmeout COMMAND --FLAG '\@not-a-file'
+```
+
+<br />
+
 ## Shell Completion
 
-`testing12 completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
+`testingmeout completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
 
 ```sh
 # bash (~/.bashrc)
-eval "$(testing12 completion bash)"
+eval "$(testingmeout completion bash)"
 
 # zsh (~/.zshrc)
-eval "$(testing12 completion zsh)"
+eval "$(testingmeout completion zsh)"
 
 # fish (~/.config/fish/config.fish)
-testing12 completion fish | source
+testingmeout completion fish | source
 ```
 
 <br />
 
 ## Manual Pages
 
-Installing the package globally also installs man pages. `man testing12` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
+Installing the package globally also installs man pages. `man testingmeout` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
 
 ```sh
-man testing12
-man testing12-<resource>-<command>
+man testingmeout
+man testingmeout-<resource>-<command>
 ```
 
 <br />
