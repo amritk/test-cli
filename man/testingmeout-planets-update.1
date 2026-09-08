@@ -1,12 +1,16 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "TESTING12\-PLANETS\-CREATE" "1" "" "testing12" "testing 12 Manual"
+.TH "TESTINGMEOUT\-PLANETS\-UPDATE" "1" "" "testingmeout" "testing me out Manual"
 .SH "NAME"
-testing12\-planets\-create \- Create a planet
+testingmeout\-planets\-update \- Update a planet
 .SH "SYNOPSIS"
-.B testing12 planets create
-\fB\-\-name\fR \fI<value>\fR \fB\-\-type\fR \fI<value>\fR [\fIoptions\fR]
+.B testingmeout planets update
+\fIplanet\-id\fR \fB\-\-name\fR \fI<value>\fR \fB\-\-type\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-Time to play god and create a new planet. What do you think? Ah, don't think too much. What could go wrong anyway?
+Sometimes you make mistakes, that's fine. No worries, you can update all planets.
+.SH "ARGUMENTS"
+.TP
+\fIplanet\-id\fR, \fB\-\-planet\-id\fR \fI<value>\fR
+The ID of the planet to get. Required. Can also be supplied as \-\-planet\-id.
 .SH "OPTIONS"
 .TP
 \fB\-\-name\fR \fI<value>\fR
@@ -129,7 +133,7 @@ API key query parameter. Can also be set with the SCALAR_69_T4_L_API_KEY_QUERY e
 .PP
 .RS 4
 .nf
-testing12 planets create \-\-bearer\-auth "$BEARER_AUTH" \-\-name 'Mars' \-\-type 'terrestrial'
+testingmeout planets update '1' \-\-bearer\-auth "$BEARER_AUTH" \-\-name 'Mars' \-\-type 'terrestrial'
 .fi
 .RE
 .SH "ENVIRONMENT"
@@ -186,4 +190,4 @@ The API failed to handle the request (HTTP 5xx). Reported as server\-error.
 \fB15\fR
 The API could not be reached, or the request timed out. Reported as connection\-error.
 .SH "SEE ALSO"
-.BR testing12 (1)
+.BR testingmeout (1)

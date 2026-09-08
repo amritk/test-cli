@@ -1,17 +1,17 @@
 ---
-name: testing12-cli-sdk
-description: "CLI SDK for testing 12 API. Use when writing CLI code that calls testing 12 API with the testing-12-cli package: installing it, constructing and authenticating the client, and calling API operations."
+name: testing-me-out-cli-sdk
+description: "CLI SDK for testing me out API. Use when writing CLI code that calls testing me out API with the testing-me-out-cli package: installing it, constructing and authenticating the client, and calling API operations."
 ---
 
-# testing 12 CLI SDK
+# testing me out CLI SDK
 
-Generated CLI client for testing 12 API, published as `testing-12-cli`. Use the generated client instead of hand-writing HTTP requests.
+Generated CLI client for testing me out API, published as `testing-me-out-cli`. Use the generated client instead of hand-writing HTTP requests.
 
 ## Install
 
 ```sh
 # npm (requires Node.js)
-npm install -g testing-12-cli
+npm install -g testing-me-out-cli
 ```
 
 ## Client setup and authentication
@@ -30,9 +30,9 @@ Provide credentials using the options below. Environment variables are read auto
 ## Calling operations
 
 ```sh
-testing12 [resource] [command] [flags]
+testingmeout [resource] [command] [flags]
 
-testing12 planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
+testingmeout planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
 ```
 
 Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](../../../api.md) before writing a call.
@@ -47,7 +47,7 @@ Failed requests print a structured error to standard error and exit with a statu
 - Use `--max-items <count>` to bound paginated, streaming, and WebSocket commands before they fill the context, and `--transform <dot.path>` to keep only the field you need.
 - Commands never prompt, so they are safe to run non-interactively. Credentials come from the documented environment variables or their flags.
 - Branch on the exit status rather than on stderr text: `0` success, `1` `error`, `2` `usage`, `10` `auth-failed`, `11` `not-found`, `12` `rate-limited`, `13` `client-error`, `14` `server-error`, `15` `connection-error`. A failed request repeats its class on stderr as a stable `code`, with a `hint` when there is a concrete next step; exit `2` is a plain message with no structured body, because the command never ran.
-- Run `testing12 --help` or `testing12 <resource> --help` to discover commands and flags, and `man testing12` for the full reference.
+- Run `testingmeout --help` or `testingmeout <resource> --help` to discover commands and flags, and `man testingmeout` for the full reference.
 
 ## Requirements
 

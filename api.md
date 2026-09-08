@@ -1,4 +1,4 @@
-# testing 12 CLI API
+# testing me out CLI API
 
 Complete reference of every operation, grouped by resource. See [the README](./README.md) for usage and configuration.
 
@@ -27,7 +27,7 @@ Everything about planets
 It's easy to say you know them all, but do you really? Retrieve all the planets and check whether you missed one.
 
 ```sh
-testing12 planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
+testingmeout planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
 ```
 
 ### Create a planet
@@ -35,7 +35,7 @@ testing12 planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
 Time to play god and create a new planet. What do you think? Ah, don't think too much. What could go wrong anyway?
 
 ```sh
-testing12 planets create --bearer-auth "$BEARER_AUTH" --name 'Mars' --type 'terrestrial'
+testingmeout planets create --bearer-auth "$BEARER_AUTH" --name 'Mars' --type 'terrestrial'
 ```
 
 ### Get a planet
@@ -43,7 +43,7 @@ testing12 planets create --bearer-auth "$BEARER_AUTH" --name 'Mars' --type 'terr
 You'll better learn a little bit more about the planets. It might come in handy once space travel is available for everyone.
 
 ```sh
-testing12 planets retrieve '1' --bearer-auth "$BEARER_AUTH"
+testingmeout planets retrieve '1' --bearer-auth "$BEARER_AUTH"
 ```
 
 ### Update a planet
@@ -51,7 +51,7 @@ testing12 planets retrieve '1' --bearer-auth "$BEARER_AUTH"
 Sometimes you make mistakes, that's fine. No worries, you can update all planets.
 
 ```sh
-testing12 planets update '1' --bearer-auth "$BEARER_AUTH" --name 'Mars' --type 'terrestrial'
+testingmeout planets update '1' --bearer-auth "$BEARER_AUTH" --name 'Mars' --type 'terrestrial'
 ```
 
 ### Delete a planet
@@ -59,7 +59,7 @@ testing12 planets update '1' --bearer-auth "$BEARER_AUTH" --name 'Mars' --type '
 This endpoint was used to delete planets. Unfortunately, that caused a lot of trouble for planets with life. So, this endpoint is now deprecated and should not be used anymore.
 
 ```sh
-testing12 planets delete '1' --bearer-auth "$BEARER_AUTH"
+testingmeout planets delete '1' --bearer-auth "$BEARER_AUTH"
 ```
 
 ### Upload an image to a planet
@@ -67,7 +67,7 @@ testing12 planets delete '1' --bearer-auth "$BEARER_AUTH"
 Got a crazy good photo of a planet? Share it with the world!
 
 ```sh
-testing12 planets upload-image '1' --bearer-auth "$BEARER_AUTH"
+testingmeout planets upload-image '1' --bearer-auth "$BEARER_AUTH"
 ```
 
 ## `CelestialBodies`
@@ -77,7 +77,7 @@ Celestial bodies are the planets and satellites in the Scalar Galaxy.
 ### Create a celestial body
 
 ```sh
-testing12 celestial-bodies create --bearer-auth "$BEARER_AUTH"
+testingmeout celestial-bodies create --bearer-auth "$BEARER_AUTH"
 ```
 
 ## `Authentication`
@@ -89,7 +89,7 @@ Some endpoints are public, but some require authentication. We provide all the r
 Time to create a user account, eh?
 
 ```sh
-testing12 authentication create-user --bearer-auth "$BEARER_AUTH" --name 'Marc' --email 'marc@scalar.com' --password 'i-love-scalar'
+testingmeout authentication create-user --bearer-auth "$BEARER_AUTH" --name 'Marc' --email 'marc@scalar.com' --password 'i-love-scalar'
 ```
 
 ### Get a token
@@ -97,7 +97,7 @@ testing12 authentication create-user --bearer-auth "$BEARER_AUTH" --name 'Marc' 
 Yeah, this is the boring security stuff. Just get your super secret token and move on.
 
 ```sh
-testing12 authentication create-token --bearer-auth "$BEARER_AUTH" --email 'marc@scalar.com' --password 'i-love-scalar'
+testingmeout authentication create-token --bearer-auth "$BEARER_AUTH" --email 'marc@scalar.com' --password 'i-love-scalar'
 ```
 
 ### Get authenticated user
@@ -105,5 +105,5 @@ testing12 authentication create-token --bearer-auth "$BEARER_AUTH" --email 'marc
 Find yourself they say. That's what you can do here.
 
 ```sh
-testing12 authentication list-me --bearer-auth "$BEARER_AUTH"
+testingmeout authentication list-me --bearer-auth "$BEARER_AUTH"
 ```

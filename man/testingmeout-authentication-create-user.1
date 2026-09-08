@@ -1,17 +1,22 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "TESTING12\-PLANETS\-DELETE" "1" "" "testing12" "testing 12 Manual"
+.TH "TESTINGMEOUT\-AUTHENTICATION\-CREATE\-USER" "1" "" "testingmeout" "testing me out Manual"
 .SH "NAME"
-testing12\-planets\-delete \- Delete a planet
+testingmeout\-authentication\-create\-user \- Create a user
 .SH "SYNOPSIS"
-.B testing12 planets delete
-\fIplanet\-id\fR [\fIoptions\fR]
+.B testingmeout authentication create\-user
+\fB\-\-email\fR \fI<value>\fR \fB\-\-password\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-This endpoint was used to delete planets. Unfortunately, that caused a lot of trouble for planets with life. So, this endpoint is now deprecated and should not be used anymore.
-.SH "ARGUMENTS"
-.TP
-\fIplanet\-id\fR, \fB\-\-planet\-id\fR \fI<value>\fR
-The ID of the planet to get. Required. Can also be supplied as \-\-planet\-id.
+Time to create a user account, eh?
 .SH "OPTIONS"
+.TP
+\fB\-\-name\fR \fI<value>\fR
+The name body parameter.
+.TP
+\fB\-\-email\fR \fI<value>\fR
+The email body parameter. Required.
+.TP
+\fB\-\-password\fR \fI<value>\fR
+The password body parameter. Required.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -67,7 +72,7 @@ API key query parameter. Can also be set with the SCALAR_69_T4_L_API_KEY_QUERY e
 .PP
 .RS 4
 .nf
-testing12 planets delete '1' \-\-bearer\-auth "$BEARER_AUTH"
+testingmeout authentication create\-user \-\-bearer\-auth "$BEARER_AUTH" \-\-name 'Marc' \-\-email 'marc@scalar.com' \-\-password 'i\-love\-scalar'
 .fi
 .RE
 .SH "ENVIRONMENT"
@@ -124,4 +129,4 @@ The API failed to handle the request (HTTP 5xx). Reported as server\-error.
 \fB15\fR
 The API could not be reached, or the request timed out. Reported as connection\-error.
 .SH "SEE ALSO"
-.BR testing12 (1)
+.BR testingmeout (1)
