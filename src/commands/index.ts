@@ -628,7 +628,7 @@ const commands = [
         location: 'body',
         required: false,
         description: 'The image file to upload',
-        valueKind: 'file',
+        valueKind: 'string',
       },
     ],
   },
