@@ -727,7 +727,7 @@ export const getProgram = (): Command =>
   createProgram({
     SDK,
     binaryName: 'testingmeout',
-    version: '0.3.1', // x-release-please-version
+    version: '0.4.0', // x-release-please-version
     description: 'CLI for testing me out',
     defaultFormat: 'auto',
     defaultErrorFormat: 'auto',
