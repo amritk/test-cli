@@ -1,19 +1,17 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "TESTINGMEOUT\-AUTHENTICATION\-CREATE\-TOKEN" "1" "" "testingmeout" "testing me out Manual"
+.TH "ASDASDSDASDSDSDSDSDSDSDSDSDSDSDSDSD\-PLANETS\-DELETE" "1" "" "asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd" "asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd Manual"
 .SH "NAME"
-testingmeout\-authentication\-create\-token \- Get a token
+asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd\-planets\-delete \- Delete a planet
 .SH "SYNOPSIS"
-.B testingmeout authentication create\-token
-\fB\-\-email\fR \fI<value>\fR \fB\-\-password\fR \fI<value>\fR [\fIoptions\fR]
+.B asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd planets delete
+\fIplanet\-id\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-Yeah, this is the boring security stuff. Just get your super secret token and move on.
+This endpoint was used to delete planets. Unfortunately, that caused a lot of trouble for planets with life. So, this endpoint is now deprecated and should not be used anymore.
+.SH "ARGUMENTS"
+.TP
+\fIplanet\-id\fR, \fB\-\-planet\-id\fR \fI<value>\fR
+The ID of the planet to get. Required. Can also be supplied as \-\-planet\-id.
 .SH "OPTIONS"
-.TP
-\fB\-\-email\fR \fI<value>\fR
-The email body parameter. Required.
-.TP
-\fB\-\-password\fR \fI<value>\fR
-The password body parameter. Required.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -69,7 +67,7 @@ API key query parameter. Can also be set with the SCALAR_69_T4_L_API_KEY_QUERY e
 .PP
 .RS 4
 .nf
-testingmeout authentication create\-token \-\-bearer\-auth "$BEARER_AUTH" \-\-email 'marc@scalar.com' \-\-password 'i\-love\-scalar'
+asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd planets delete '1' \-\-bearer\-auth "$BEARER_AUTH"
 .fi
 .RE
 .SH "ENVIRONMENT"
@@ -126,4 +124,4 @@ The API failed to handle the request (HTTP 5xx). Reported as server\-error.
 \fB15\fR
 The API could not be reached, or the request timed out. Reported as connection\-error.
 .SH "SEE ALSO"
-.BR testingmeout (1)
+.BR asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd (1)

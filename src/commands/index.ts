@@ -628,7 +628,7 @@ const commands = [
         location: 'body',
         required: false,
         description: 'The image file to upload',
-        valueKind: 'string',
+        valueKind: 'file',
       },
     ],
   },
@@ -726,9 +726,9 @@ const commands = [
 export const getProgram = (): Command =>
   createProgram({
     SDK,
-    binaryName: 'testingmeout',
+    binaryName: 'asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd',
     version: '0.3.1', // x-release-please-version
-    description: 'CLI for testing me out',
+    description: 'CLI for asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd',
     defaultFormat: 'auto',
     defaultErrorFormat: 'auto',
     clientOptions,
