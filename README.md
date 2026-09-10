@@ -1,6 +1,6 @@
-# asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd
+# Test it
 
-This library provides convenient access to the asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd REST API from the command line.
+This library provides convenient access to the Test it REST API from the command line.
 
 The full API of this library can be found in [api.md](./api.md).
 
@@ -28,7 +28,7 @@ The full API of this library can be found in [api.md](./api.md).
 
 ```sh
 # npm (requires Node.js)
-npm install -g asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-cli
+npm install -g test-it-cli
 ```
 
 <br />
@@ -36,9 +36,9 @@ npm install -g asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-cli
 ## Usage
 
 ```sh
-asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd [resource] [command] [flags]
+testit [resource] [command] [flags]
 
-asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
+testit planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
 ```
 
 The examples in the following sections assume a `client` configured as shown above.
@@ -52,38 +52,38 @@ See the [API reference](./api.md) for every available operation.
 Any command flag or credential reads its value from a file when the value begins with `@`, so a body field holding a whole document does not have to survive shell quoting. `@file://` always sends the file as text and `@data://` always sends it base64-encoded; a bare `@` lets the file decide. A flag that uploads a file takes its path with or without the `@`. Escape a literal value that begins with `@` as `\@`. The global options (`--base-url`, `--timeout`, `--format` and the rest) are read exactly as written.
 
 ```sh
-asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd COMMAND --FLAG @./body.json
-asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd COMMAND --FLAG @file://./notes.txt
-asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd COMMAND --FLAG @data://./logo.png
-asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd COMMAND --FLAG '\@not-a-file'
+testit COMMAND --FLAG @./body.json
+testit COMMAND --FLAG @file://./notes.txt
+testit COMMAND --FLAG @data://./logo.png
+testit COMMAND --FLAG '\@not-a-file'
 ```
 
 <br />
 
 ## Shell Completion
 
-`asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
+`testit completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
 
 ```sh
 # bash (~/.bashrc)
-eval "$(asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd completion bash)"
+eval "$(testit completion bash)"
 
 # zsh (~/.zshrc)
-eval "$(asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd completion zsh)"
+eval "$(testit completion zsh)"
 
 # fish (~/.config/fish/config.fish)
-asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd completion fish | source
+testit completion fish | source
 ```
 
 <br />
 
 ## Manual Pages
 
-Installing the package globally also installs man pages. `man asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
+Installing the package globally also installs man pages. `man testit` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
 
 ```sh
-man asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd
-man asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-<resource>-<command>
+man testit
+man testit-<resource>-<command>
 ```
 
 <br />

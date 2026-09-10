@@ -1,79 +1,13 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "ASDASDSDASDSDSDSDSDSDSDSDSDSDSDSDSD\-PLANETS\-CREATE" "1" "" "asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd" "asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd Manual"
+.TH "TESTIT\-CELESTIAL\-BODIES\-CREATE" "1" "" "testit" "Test it Manual"
 .SH "NAME"
-asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd\-planets\-create \- Create a planet
+testit\-celestial\-bodies\-create \- Create a celestial body
 .SH "SYNOPSIS"
-.B asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd planets create
-\fB\-\-name\fR \fI<value>\fR \fB\-\-type\fR \fI<value>\fR [\fIoptions\fR]
+.B testit celestial\-bodies create
+[\fIoptions\fR]
 .SH "DESCRIPTION"
-Time to play god and create a new planet. What do you think? Ah, don't think too much. What could go wrong anyway?
+Create a celestial body
 .SH "OPTIONS"
-.TP
-\fB\-\-name\fR \fI<value>\fR
-The name body parameter. Required.
-.TP
-\fB\-\-description\fR \fI<value>\fR
-The description body parameter.
-.TP
-\fB\-\-type\fR \fI<value>\fR
-The type body parameter. Required.
-.TP
-\fB\-\-habitability\-index\fR \fI<number>\fR
-A score from 0 to 1 indicating potential habitability.
-.TP
-\fB\-\-physical\-properties\fR \fI<json>\fR
-The physical\-properties body parameter.
-.TP
-\fB\-\-physical\-properties.mass\fR \fI<number>\fR
-Mass in Earth masses (must be greater than 0).
-.TP
-\fB\-\-physical\-properties.radius\fR \fI<number>\fR
-Radius in Earth radii (must be greater than 0).
-.TP
-\fB\-\-physical\-properties.gravity\fR \fI<number>\fR
-Surface gravity in Earth g.
-.TP
-\fB\-\-physical\-properties.temperature\fR \fI<json>\fR
-The physical\-properties.temperature body parameter.
-.TP
-\fB\-\-physical\-properties.temperature.min\fR \fI<number>\fR
-Minimum temperature in Kelvin.
-.TP
-\fB\-\-physical\-properties.temperature.max\fR \fI<number>\fR
-Maximum temperature in Kelvin.
-.TP
-\fB\-\-physical\-properties.temperature.average\fR \fI<number>\fR
-Average temperature in Kelvin.
-.TP
-\fB\-\-atmosphere\fR \fI<value>\fR
-Atmospheric composition. Repeat the flag to pass multiple values.
-.TP
-\fB\-\-discovered\-at\fR \fI<value>\fR
-The discovered\-at body parameter.
-.TP
-\fB\-\-image\fR \fI<value>\fR
-The image body parameter.
-.TP
-\fB\-\-satellite\fR \fI<value>\fR
-The satellite body parameter. Repeat the flag to pass multiple values.
-.TP
-\fB\-\-creator\fR \fI<json>\fR
-A user.
-.TP
-\fB\-\-creator.id\fR \fI<number>\fR
-The creator.id body parameter.
-.TP
-\fB\-\-creator.name\fR \fI<value>\fR
-The creator.name body parameter.
-.TP
-\fB\-\-tag\fR \fI<value>\fR
-The tag body parameter. Repeat the flag to pass multiple values.
-.TP
-\fB\-\-success\-callback\-url\fR \fI<value>\fR
-URL which gets invoked upon a successful operation.
-.TP
-\fB\-\-failure\-callback\-url\fR \fI<value>\fR
-URL which gets invoked upon a failed operation.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -129,7 +63,7 @@ API key query parameter. Can also be set with the SCALAR_69_T4_L_API_KEY_QUERY e
 .PP
 .RS 4
 .nf
-asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd planets create \-\-bearer\-auth "$BEARER_AUTH" \-\-name 'Mars' \-\-type 'terrestrial'
+testit celestial\-bodies create \-\-bearer\-auth "$BEARER_AUTH"
 .fi
 .RE
 .SH "ENVIRONMENT"
@@ -186,4 +120,4 @@ The API failed to handle the request (HTTP 5xx). Reported as server\-error.
 \fB15\fR
 The API could not be reached, or the request timed out. Reported as connection\-error.
 .SH "SEE ALSO"
-.BR asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd (1)
+.BR testit (1)

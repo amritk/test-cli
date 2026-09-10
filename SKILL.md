@@ -1,17 +1,17 @@
 ---
-name: asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-cli-sdk
-description: "CLI SDK for asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd API. Use when writing CLI code that calls asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd API with the asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-cli package: installing it, constructing and authenticating the client, and calling API operations."
+name: test-it-cli-sdk
+description: "CLI SDK for Test it API. Use when writing CLI code that calls Test it API with the test-it-cli package: installing it, constructing and authenticating the client, and calling API operations."
 ---
 
-# asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd CLI SDK
+# Test it CLI SDK
 
-Generated CLI client for asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd API, published as `asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-cli`. Use the generated client instead of hand-writing HTTP requests.
+Generated CLI client for Test it API, published as `test-it-cli`. Use the generated client instead of hand-writing HTTP requests.
 
 ## Install
 
 ```sh
 # npm (requires Node.js)
-npm install -g asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-cli
+npm install -g test-it-cli
 ```
 
 ## Client setup and authentication
@@ -30,9 +30,9 @@ Provide credentials using the options below. Environment variables are read auto
 ## Calling operations
 
 ```sh
-asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd [resource] [command] [flags]
+testit [resource] [command] [flags]
 
-asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
+testit planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
 ```
 
 Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](./api.md) before writing a call.
@@ -47,7 +47,7 @@ Failed requests print a structured error to standard error and exit with a statu
 - Use `--max-items <count>` to bound paginated, streaming, and WebSocket commands before they fill the context, and `--transform <dot.path>` to keep only the field you need.
 - Commands never prompt, so they are safe to run non-interactively. Credentials come from the documented environment variables or their flags.
 - Branch on the exit status rather than on stderr text: `0` success, `1` `error`, `2` `usage`, `10` `auth-failed`, `11` `not-found`, `12` `rate-limited`, `13` `client-error`, `14` `server-error`, `15` `connection-error`. A failed request repeats its class on stderr as a stable `code`, with a `hint` when there is a concrete next step; exit `2` is a plain message with no structured body, because the command never ran.
-- Run `asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd --help` or `asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd <resource> --help` to discover commands and flags, and `man asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd` for the full reference.
+- Run `testit --help` or `testit <resource> --help` to discover commands and flags, and `man testit` for the full reference.
 
 ## Requirements
 
