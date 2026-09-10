@@ -1,40 +1,47 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from "../resource";
-import { APIPromise } from "../api-promise";
-import type { RequestOptions } from "../internal/request-options";
+import { APIResource } from '../resource';
+import { APIPromise } from '../api-promise';
+import type { RequestOptions } from '../internal/request-options';
 
 export class Authentication extends APIResource {
   /**
    * Time to create a user account, eh?
    *
-   * @param {AuthenticationCreateUserParams} [body] - The request body to send.
+   * @param {AuthenticationCreateUserParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<User>} Created
    *
    * @example
    * ```ts
-   * const user = await client.authentication.createUser();
+   * const user = await client.authentication.createUser({
+   *   name: 'Marc',
+   *   email: 'marc@scalar.com',
+   *   password: 'i-love-scalar',
+   * });
    * ```
    */
-  createUser(body: AuthenticationCreateUserParams | null | undefined = undefined, options?: RequestOptions): APIPromise<User> {
-    return this._client.post("/user/signup", { body, ...options });
+  createUser(body: AuthenticationCreateUserParams, options?: RequestOptions): APIPromise<User> {
+    return this._client.post('/user/signup', { body, ...options });
   }
 
   /**
    * Yeah, this is the boring security stuff. Just get your super secret token and move on.
    *
-   * @param {AuthenticationCreateTokenParams} [body] - The request body to send.
+   * @param {AuthenticationCreateTokenParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<AuthenticationCreateTokenResponse>} Token Created
+   * @returns {APIPromise<Token>} Token Created
    *
    * @example
    * ```ts
-   * const createToken = await client.authentication.createToken();
+   * const token = await client.authentication.createToken({
+   *   email: 'marc@scalar.com',
+   *   password: 'i-love-scalar',
+   * });
    * ```
    */
-  createToken(body: AuthenticationCreateTokenParams | null | undefined = undefined, options?: RequestOptions): APIPromise<AuthenticationCreateTokenResponse> {
-    return this._client.post("/auth/token", { body, ...options });
+  createToken(body: AuthenticationCreateTokenParams, options?: RequestOptions): APIPromise<Token> {
+    return this._client.post('/auth/token', { body, ...options });
   }
 
   /**
@@ -49,7 +56,7 @@ export class Authentication extends APIResource {
    * ```
    */
   listMe(options?: RequestOptions): APIPromise<User> {
-    return this._client.get("/me", options);
+    return this._client.get('/me', options);
   }
 }
 
@@ -65,13 +72,10 @@ export interface User {
 }
 
 /**
- * Credentials to authenticate a user
+ * A token to authenticate a user
  */
-export interface Credentials {
-  /**
-   * @format email
-   */
-  email: string;
+export interface Token {
+  token?: string;
 }
 
 export interface AuthenticationCreateUserParams {
@@ -90,15 +94,10 @@ export interface AuthenticationCreateTokenParams {
   email: string;
   password: string;
 }
-
-export interface AuthenticationCreateTokenResponse {
-  token?: string;
-}
 export declare namespace Authentication {
   export {
     type User as User,
-    type Credentials as Credentials,
-    type AuthenticationCreateTokenResponse as AuthenticationCreateTokenResponse,
+    type Token as Token,
     type AuthenticationCreateUserParams as AuthenticationCreateUserParams,
     type AuthenticationCreateTokenParams as AuthenticationCreateTokenParams,
   };

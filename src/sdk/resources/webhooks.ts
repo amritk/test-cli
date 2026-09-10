@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from "../resource";
+import { APIResource } from '../resource';
 import { Webhook } from 'standardwebhooks';
 
 export class Webhooks extends APIResource {
