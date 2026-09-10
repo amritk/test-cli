@@ -1,15 +1,15 @@
 {
-  "name": "testing-me-out-cli",
+  "name": "asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-cli",
   "version": "0.1.0",
   "description": "The Scalar Galaxy is an example OpenAPI document to test OpenAPI tools and libraries. It's a fictional universe with fictional planets and fictional data. Get all the data for all planets.",
-  "author": "Testing Me Out",
+  "author": "Asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/amritk/test-cli.git"
   },
   "type": "module",
   "bin": {
-    "testingmeout": "./dist/esm/bin.js"
+    "asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd": "./dist/esm/bin.js"
   },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -30,18 +30,18 @@
     "SKILL.md"
   ],
   "man": [
-    "./man/testingmeout.1",
-    "./man/testingmeout-planets-list.1",
-    "./man/testingmeout-planets-create.1",
-    "./man/testingmeout-planets-retrieve.1",
-    "./man/testingmeout-planets-update.1",
-    "./man/testingmeout-planets-delete.1",
-    "./man/testingmeout-planets-upload-image.1",
-    "./man/testingmeout-celestial-bodies-create.1",
-    "./man/testingmeout-authentication-create-user.1",
-    "./man/testingmeout-authentication-create-token.1",
-    "./man/testingmeout-authentication-list-me.1",
-    "./man/testingmeout-completion.1"
+    "./man/asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd.1",
+    "./man/asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-planets-list.1",
+    "./man/asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-planets-create.1",
+    "./man/asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-planets-retrieve.1",
+    "./man/asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-planets-update.1",
+    "./man/asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-planets-delete.1",
+    "./man/asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-planets-upload-image.1",
+    "./man/asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-celestial-bodies-create.1",
+    "./man/asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-authentication-create-user.1",
+    "./man/asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-authentication-create-token.1",
+    "./man/asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-authentication-list-me.1",
+    "./man/asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-completion.1"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && node scripts/finalize-build.mjs",

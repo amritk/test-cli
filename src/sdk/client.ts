@@ -188,7 +188,7 @@ export interface ClientOptions {
 export type ApiTestOptions = ClientOptions;
 
 /**
- * API Client for interfacing with the TestingMeOut API.
+ * API Client for interfacing with the Asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd API.
  */
 export class ApiTest {
   bearerAuth: string | AuthTokenProvider | null;
@@ -215,7 +215,7 @@ export class ApiTest {
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the TestingMeOut API.
+   * API Client for interfacing with the Asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd API.
    *
    * @param {string | AuthTokenProvider | null | undefined} [opts.bearerAuth=process.env["BEARER_AUTH"] ?? null]
    * @param {string | AuthTokenProvider | null | undefined} [opts.basicAuthUsername=process.env["BASIC_AUTH_USERNAME"] ?? null]

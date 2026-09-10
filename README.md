@@ -1,6 +1,6 @@
-# testing me out
+# asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd
 
-This library provides convenient access to the testing me out REST API from the command line.
+This library provides convenient access to the asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd REST API from the command line.
 
 The full API of this library can be found in [api.md](./api.md).
 
@@ -11,6 +11,7 @@ The full API of this library can be found in [api.md](./api.md).
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Reference](./api.md)
+- [File Arguments](#file-arguments)
 - [Shell Completion](#shell-completion)
 - [Manual Pages](#manual-pages)
 - [Authentication](#authentication)
@@ -27,7 +28,7 @@ The full API of this library can be found in [api.md](./api.md).
 
 ```sh
 # npm (requires Node.js)
-npm install -g testing-me-out-cli
+npm install -g asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-cli
 ```
 
 <br />
@@ -35,9 +36,9 @@ npm install -g testing-me-out-cli
 ## Usage
 
 ```sh
-testingmeout [resource] [command] [flags]
+asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd [resource] [command] [flags]
 
-testingmeout planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
+asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
 ```
 
 The examples in the following sections assume a `client` configured as shown above.
@@ -46,30 +47,43 @@ See the [API reference](./api.md) for every available operation.
 
 <br />
 
+## File Arguments
+
+Any command flag or credential reads its value from a file when the value begins with `@`, so a body field holding a whole document does not have to survive shell quoting. `@file://` always sends the file as text and `@data://` always sends it base64-encoded; a bare `@` lets the file decide. A flag that uploads a file takes its path with or without the `@`. Escape a literal value that begins with `@` as `\@`. The global options (`--base-url`, `--timeout`, `--format` and the rest) are read exactly as written.
+
+```sh
+asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd COMMAND --FLAG @./body.json
+asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd COMMAND --FLAG @file://./notes.txt
+asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd COMMAND --FLAG @data://./logo.png
+asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd COMMAND --FLAG '\@not-a-file'
+```
+
+<br />
+
 ## Shell Completion
 
-`testingmeout completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
+`asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
 
 ```sh
 # bash (~/.bashrc)
-eval "$(testingmeout completion bash)"
+eval "$(asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd completion bash)"
 
 # zsh (~/.zshrc)
-eval "$(testingmeout completion zsh)"
+eval "$(asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd completion zsh)"
 
 # fish (~/.config/fish/config.fish)
-testingmeout completion fish | source
+asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd completion fish | source
 ```
 
 <br />
 
 ## Manual Pages
 
-Installing the package globally also installs man pages. `man testingmeout` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
+Installing the package globally also installs man pages. `man asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
 
 ```sh
-man testingmeout
-man testingmeout-<resource>-<command>
+man asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd
+man asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd-<resource>-<command>
 ```
 
 <br />
