@@ -726,9 +726,9 @@ const commands = [
 export const getProgram = (): Command =>
   createProgram({
     SDK,
-    binaryName: 'testit',
-    version: '0.3.1', // x-release-please-version
-    description: 'CLI for Test it',
+    binaryName: 'asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd',
+    version: '0.4.0', // x-release-please-version
+    description: 'CLI for asdasdsdasdsdsdsdsdsdsdsdsdsdsdsdsd',
     defaultFormat: 'auto',
     defaultErrorFormat: 'auto',
     clientOptions,
