@@ -3,7 +3,7 @@
 import { APIResource } from '../resource';
 import { APIPromise } from '../api-promise';
 import type { RequestOptions } from '../internal/request-options';
-import type * as PlanetsAPI from './planets';
+import type * as PizzasAPI from './planets/pizzas';
 import type * as AuthenticationAPI from './authentication';
 
 export class CelestialBodies extends APIResource {
@@ -30,9 +30,9 @@ export class CelestialBodies extends APIResource {
 /**
  * A celestial body which can be either a planet or a satellite
  */
-export type CelestialBody = PlanetsAPI.Planet | PlanetsAPI.Satellite;
+export type CelestialBody = PizzasAPI.Planet | PizzasAPI.Satellite;
 
-export type CelestialBodyCreateParams = PlanetsAPI.Planet | PlanetsAPI.Satellite;
+export type CelestialBodyCreateParams = PizzasAPI.Planet | PizzasAPI.Satellite;
 export declare namespace CelestialBodies {
   export { type CelestialBody as CelestialBody, type CelestialBodyCreateParams as CelestialBodyCreateParams };
 }

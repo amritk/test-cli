@@ -41,7 +41,7 @@ const cases: { operation: string; method: string; path: string; label?: string; 
     operation: 'list',
     method: 'GET',
     path: '/planets',
-    args: ['planets', 'list', '--limit', '10', '--offset', '0'],
+    args: ['planets:pizzas', 'list', '--limit', '10', '--offset', '0'],
   },
 
   {
@@ -49,7 +49,7 @@ const cases: { operation: string; method: string; path: string; label?: string; 
     method: 'POST',
     path: '/planets',
     label: 'required params',
-    args: ['planets', 'create', '--name', 'Mars', '--type', 'terrestrial'],
+    args: ['planets:pizzas', 'create', '--name', 'Mars', '--type', 'terrestrial'],
   },
 
   {
@@ -58,7 +58,7 @@ const cases: { operation: string; method: string; path: string; label?: string; 
     path: '/planets',
     label: 'all params',
     args: [
-      'planets',
+      'planets:pizzas',
       'create',
       '--name',
       'Mars',
@@ -93,60 +93,14 @@ const cases: { operation: string; method: string; path: string; label?: string; 
     operation: 'retrieve',
     method: 'GET',
     path: '/planets/{planetId}',
-    args: ['planets', 'retrieve', '1'],
-  },
-
-  {
-    operation: 'update',
-    method: 'PUT',
-    path: '/planets/{planetId}',
-    label: 'required params',
-    args: ['planets', 'update', '1', '--name', 'Mars', '--type', 'terrestrial'],
-  },
-
-  {
-    operation: 'update',
-    method: 'PUT',
-    path: '/planets/{planetId}',
-    label: 'all params',
-    args: [
-      'planets',
-      'update',
-      '1',
-      '--name',
-      'Mars',
-      '--description',
-      'The red planet',
-      '--type',
-      'terrestrial',
-      '--habitability-index',
-      '0.68',
-      '--physical-properties',
-      '{"mass":0.107,"radius":0.532,"gravity":0.378,"temperature":{}}',
-      '--atmosphere',
-      '{}',
-      '--discovered-at',
-      '1610-01-07T00:00:00Z',
-      '--image',
-      'https://cdn.scalar.com/photos/mars.jpg',
-      '--satellite',
-      '{"name":"Phobos","type":"moon"}',
-      '--creator',
-      '{"name":"Marc"}',
-      '--tag',
-      '',
-      '--success-callback-url',
-      'https://example.com/webhook',
-      '--failure-callback-url',
-      'https://example.com/webhook',
-    ],
+    args: ['planets:pizzas', 'retrieve', '1'],
   },
 
   {
     operation: 'delete',
     method: 'DELETE',
     path: '/planets/{planetId}',
-    args: ['planets', 'delete', '1'],
+    args: ['planets:pizzas', 'delete', '1'],
   },
 
   {
@@ -154,7 +108,7 @@ const cases: { operation: string; method: string; path: string; label?: string; 
     method: 'POST',
     path: '/planets/{planetId}/image',
     label: 'required params',
-    args: ['planets', 'upload-image', '1'],
+    args: ['planets:pizzas', 'upload-image', '1'],
   },
 
   {
@@ -162,7 +116,7 @@ const cases: { operation: string; method: string; path: string; label?: string; 
     method: 'POST',
     path: '/planets/{planetId}/image',
     label: 'all params',
-    args: ['planets', 'upload-image', '1', '--image', '__scalar_smoke_file__'],
+    args: ['planets:pizzas', 'upload-image', '1', '--image', '__scalar_smoke_file__'],
   },
 
   {

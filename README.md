@@ -38,10 +38,10 @@ npm install -g test-it-cli
 ```sh
 testit [resource] [command] [flags]
 
-testit planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
+testit planets:pizzas list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
 ```
 
-The examples in the following sections assume a `client` configured as shown above.
+Every command accepts the global flags below, so the examples that follow show only what is specific to them.
 
 See the [API reference](./api.md) for every available operation.
 

@@ -26,18 +26,7 @@ import type { HTTPMethod, FinalizedRequestInit, MergedRequestInit, PromiseOrValu
 import { stringifyQuery } from './internal/utils/query';
 import { toFile } from './core/uploads';
 import { VERSION } from './version';
-import {
-  Planets,
-  type Planet,
-  type PaginatedResource,
-  type Satellite,
-  type PlanetListResponse,
-  type PlanetUploadImageResponse,
-  type PlanetListParams,
-  type PlanetCreateParams,
-  type PlanetUpdateParams,
-  type PlanetUploadImageParams,
-} from './resources/planets';
+import { Planets } from './resources/planets/planets';
 import {
   CelestialBodies,
   type CelestialBody,
@@ -624,7 +613,8 @@ export class ApiTest {
   ): Promise<Response> {
     const { signal, method, ...options } = init || {};
     const abort = this._makeAbort(controller);
-    if (signal) signal.addEventListener('abort', abort, { once: true });
+    if (signal?.aborted) abort();
+    else if (signal) signal.addEventListener('abort', abort, { once: true });
 
     const timeout = setTimeout(abort, ms);
 
@@ -1037,18 +1027,7 @@ ApiTest.Webhooks = Webhooks;
 
 export declare namespace ApiTest {
   export type RequestOptions = Opts.RequestOptions;
-  export {
-    Planets as Planets,
-    type Planet as Planet,
-    type PaginatedResource as PaginatedResource,
-    type Satellite as Satellite,
-    type PlanetListResponse as PlanetListResponse,
-    type PlanetUploadImageResponse as PlanetUploadImageResponse,
-    type PlanetListParams as PlanetListParams,
-    type PlanetCreateParams as PlanetCreateParams,
-    type PlanetUpdateParams as PlanetUpdateParams,
-    type PlanetUploadImageParams as PlanetUploadImageParams,
-  };
+  export { Planets as Planets };
 
   export {
     CelestialBodies as CelestialBodies,

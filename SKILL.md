@@ -32,7 +32,7 @@ Provide credentials using the options below. Environment variables are read auto
 ```sh
 testit [resource] [command] [flags]
 
-testit planets list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
+testit planets:pizzas list --bearer-auth "$BEARER_AUTH" --limit '10' --offset '0'
 ```
 
 Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](./api.md) before writing a call.
