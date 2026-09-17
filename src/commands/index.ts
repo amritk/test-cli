@@ -2,7 +2,12 @@
 
 import type { Command } from 'commander';
 import SDK from '../sdk/index';
-import { createProgram, type CliClientOptionDefinition, type CliCommandDefinition } from '../cli/runtime';
+import {
+  createProgram,
+  type CliClientOptionDefinition,
+  type CliCommandDefinition,
+  type CliCommandGroup,
+} from '../cli/runtime';
 import { completions } from '../cli/completions';
 
 const clientOptions = [
@@ -82,8 +87,8 @@ const clientOptions = [
 
 const commands = [
   {
-    resourcePath: ['planets'],
-    commandPath: ['planets', 'list'],
+    resourcePath: ['planets', 'pizzas'],
+    commandPath: ['planets:pizzas', 'list'],
     methodName: 'list',
     summary: 'Get all planets',
     description:
@@ -114,8 +119,8 @@ const commands = [
     ],
   },
   {
-    resourcePath: ['planets'],
-    commandPath: ['planets', 'create'],
+    resourcePath: ['planets', 'pizzas'],
+    commandPath: ['planets:pizzas', 'create'],
     methodName: 'create',
     summary: 'Create a planet',
     description:
@@ -330,8 +335,8 @@ const commands = [
     ],
   },
   {
-    resourcePath: ['planets'],
-    commandPath: ['planets', 'retrieve'],
+    resourcePath: ['planets', 'pizzas'],
+    commandPath: ['planets:pizzas', 'retrieve'],
     methodName: 'retrieve',
     summary: 'Get a planet',
     description:
@@ -353,233 +358,8 @@ const commands = [
     flags: [],
   },
   {
-    resourcePath: ['planets'],
-    commandPath: ['planets', 'update'],
-    methodName: 'update',
-    summary: 'Update a planet',
-    description: "Sometimes you make mistakes, that's fine. No worries, you can update all planets.",
-    transport: 'http',
-    iterable: false,
-    callShape: 'body',
-    positional: [
-      {
-        name: 'planet-id',
-        optionKey: 'planetId',
-        paramKey: 'planetId',
-        location: 'path',
-        required: true,
-        description: 'The ID of the planet to get',
-        valueKind: 'integer',
-      },
-    ],
-    flags: [
-      {
-        name: 'name',
-        optionKey: 'name',
-        paramKey: 'name',
-        location: 'body',
-        required: true,
-        valueKind: 'string',
-      },
-      {
-        name: 'description',
-        optionKey: 'description',
-        paramKey: 'description',
-        location: 'body',
-        required: false,
-        valueKind: 'string',
-      },
-      {
-        name: 'type',
-        optionKey: 'type',
-        paramKey: 'type',
-        location: 'body',
-        required: true,
-        valueKind: 'string',
-      },
-      {
-        name: 'habitability-index',
-        optionKey: 'habitabilityIndex',
-        paramKey: 'habitabilityIndex',
-        location: 'body',
-        required: false,
-        description: 'A score from 0 to 1 indicating potential habitability',
-        valueKind: 'number',
-      },
-      {
-        name: 'physical-properties',
-        optionKey: 'physicalProperties',
-        paramKey: 'physicalProperties',
-        location: 'body',
-        required: false,
-        valueKind: 'object',
-      },
-      {
-        name: 'physical-properties.mass',
-        optionKey: 'physicalProperties.mass',
-        paramKey: 'physicalProperties',
-        location: 'body',
-        required: false,
-        description: 'Mass in Earth masses (must be greater than 0)',
-        valueKind: 'number',
-        objectPath: ['mass'],
-      },
-      {
-        name: 'physical-properties.radius',
-        optionKey: 'physicalProperties.radius',
-        paramKey: 'physicalProperties',
-        location: 'body',
-        required: false,
-        description: 'Radius in Earth radii (must be greater than 0)',
-        valueKind: 'number',
-        objectPath: ['radius'],
-      },
-      {
-        name: 'physical-properties.gravity',
-        optionKey: 'physicalProperties.gravity',
-        paramKey: 'physicalProperties',
-        location: 'body',
-        required: false,
-        description: 'Surface gravity in Earth g',
-        valueKind: 'number',
-        objectPath: ['gravity'],
-      },
-      {
-        name: 'physical-properties.temperature',
-        optionKey: 'physicalProperties.temperature',
-        paramKey: 'physicalProperties',
-        location: 'body',
-        required: false,
-        valueKind: 'object',
-        objectPath: ['temperature'],
-      },
-      {
-        name: 'physical-properties.temperature.min',
-        optionKey: 'physicalProperties.temperature.min',
-        paramKey: 'physicalProperties',
-        location: 'body',
-        required: false,
-        description: 'Minimum temperature in Kelvin',
-        valueKind: 'number',
-        objectPath: ['temperature', 'min'],
-      },
-      {
-        name: 'physical-properties.temperature.max',
-        optionKey: 'physicalProperties.temperature.max',
-        paramKey: 'physicalProperties',
-        location: 'body',
-        required: false,
-        description: 'Maximum temperature in Kelvin',
-        valueKind: 'number',
-        objectPath: ['temperature', 'max'],
-      },
-      {
-        name: 'physical-properties.temperature.average',
-        optionKey: 'physicalProperties.temperature.average',
-        paramKey: 'physicalProperties',
-        location: 'body',
-        required: false,
-        description: 'Average temperature in Kelvin',
-        valueKind: 'number',
-        objectPath: ['temperature', 'average'],
-      },
-      {
-        name: 'atmosphere',
-        optionKey: 'atmosphere',
-        paramKey: 'atmosphere',
-        location: 'body',
-        required: false,
-        description: 'Atmospheric composition',
-        valueKind: 'array',
-        repeatable: true,
-        itemKind: 'object',
-      },
-      {
-        name: 'discovered-at',
-        optionKey: 'discoveredAt',
-        paramKey: 'discoveredAt',
-        location: 'body',
-        required: false,
-        valueKind: 'string',
-      },
-      {
-        name: 'image',
-        optionKey: 'image',
-        paramKey: 'image',
-        location: 'body',
-        required: false,
-        valueKind: 'string',
-      },
-      {
-        name: 'satellite',
-        optionKey: 'satellite',
-        paramKey: 'satellites',
-        location: 'body',
-        required: false,
-        valueKind: 'array',
-        repeatable: true,
-        itemKind: 'object',
-      },
-      {
-        name: 'creator',
-        optionKey: 'creator',
-        paramKey: 'creator',
-        location: 'body',
-        required: false,
-        description: 'A user',
-        valueKind: 'object',
-      },
-      {
-        name: 'creator.id',
-        optionKey: 'creator.id',
-        paramKey: 'creator',
-        location: 'body',
-        required: false,
-        valueKind: 'integer',
-        objectPath: ['id'],
-      },
-      {
-        name: 'creator.name',
-        optionKey: 'creator.name',
-        paramKey: 'creator',
-        location: 'body',
-        required: false,
-        valueKind: 'string',
-        objectPath: ['name'],
-      },
-      {
-        name: 'tag',
-        optionKey: 'tag',
-        paramKey: 'tags',
-        location: 'body',
-        required: false,
-        valueKind: 'array',
-        repeatable: true,
-        itemKind: 'string',
-      },
-      {
-        name: 'success-callback-url',
-        optionKey: 'successCallbackUrl',
-        paramKey: 'successCallbackUrl',
-        location: 'body',
-        required: false,
-        description: 'URL which gets invoked upon a successful operation',
-        valueKind: 'string',
-      },
-      {
-        name: 'failure-callback-url',
-        optionKey: 'failureCallbackUrl',
-        paramKey: 'failureCallbackUrl',
-        location: 'body',
-        required: false,
-        description: 'URL which gets invoked upon a failed operation',
-        valueKind: 'string',
-      },
-    ],
-  },
-  {
-    resourcePath: ['planets'],
-    commandPath: ['planets', 'delete'],
+    resourcePath: ['planets', 'pizzas'],
+    commandPath: ['planets:pizzas', 'delete'],
     methodName: 'delete',
     summary: 'Delete a planet',
     description:
@@ -601,8 +381,8 @@ const commands = [
     flags: [],
   },
   {
-    resourcePath: ['planets'],
-    commandPath: ['planets', 'upload-image'],
+    resourcePath: ['planets', 'pizzas'],
+    commandPath: ['planets:pizzas', 'upload-image'],
     methodName: 'uploadImage',
     summary: 'Upload an image to a planet',
     description: 'Got a crazy good photo of a planet? Share it with the world!',
@@ -723,6 +503,22 @@ const commands = [
   },
 ] as const satisfies readonly CliCommandDefinition[];
 
+const groups = [
+  {
+    commandPath: ['planets', 'pizzas'],
+    description: 'Everything about planets',
+  },
+  {
+    commandPath: ['celestial-bodies'],
+    description: 'Celestial bodies are the planets and satellites in the Scalar Galaxy.',
+  },
+  {
+    commandPath: ['authentication'],
+    description:
+      'Some endpoints are public, but some require authentication. We provide all the required endpoints to create an account and authorize yourself.',
+  },
+] as const satisfies readonly CliCommandGroup[];
+
 export const getProgram = (): Command =>
   createProgram({
     SDK,
@@ -733,5 +529,6 @@ export const getProgram = (): Command =>
     defaultErrorFormat: 'auto',
     clientOptions,
     commands,
+    groups,
     completions,
   });

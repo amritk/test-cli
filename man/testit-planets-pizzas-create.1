@@ -1,9 +1,9 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "TESTIT\-PLANETS\-CREATE" "1" "" "testit" "Test it Manual"
+.TH "TESTIT\-PLANETS\-PIZZAS\-CREATE" "1" "" "testit" "Test it Manual"
 .SH "NAME"
-testit\-planets\-create \- Create a planet
+testit\-planets\-pizzas\-create \- Create a planet
 .SH "SYNOPSIS"
-.B testit planets create
+.B testit planets:pizzas create
 \fB\-\-name\fR \fI<value>\fR \fB\-\-type\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Time to play god and create a new planet. What do you think? Ah, don't think too much. What could go wrong anyway?
@@ -129,7 +129,10 @@ API key query parameter. Can also be set with the SCALAR_69_T4_L_API_KEY_QUERY e
 .PP
 .RS 4
 .nf
-testit planets create \-\-bearer\-auth "$BEARER_AUTH" \-\-name 'Mars' \-\-type 'terrestrial'
+testit planets:pizzas create \e
+  \-\-bearer\-auth "$BEARER_AUTH" \e
+  \-\-name 'Mars' \e
+  \-\-type 'terrestrial'
 .fi
 .RE
 .SH "ENVIRONMENT"
