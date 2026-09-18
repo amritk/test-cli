@@ -2,13 +2,13 @@
 
 import { castToError } from '../internal/errors';
 
-export class GalaxyError extends Error {}
+export class ApiTestError extends Error {}
 
 export class APIError<
   TStatus extends number | undefined = number | undefined,
   THeaders extends Headers | undefined = Headers | undefined,
   TError extends Object | undefined = Object | undefined,
-> extends GalaxyError {
+> extends ApiTestError {
   /** HTTP status for the response that caused the error */
   readonly status: TStatus;
   /** HTTP headers for the response that caused the error */
@@ -24,13 +24,13 @@ export class APIError<
   }
 
   private static makeMessage(status: number | undefined, error: any, message: string | undefined) {
-    const msg =
-      error?.message ?
-        typeof error.message === 'string' ?
-          error.message
+    const msg = error?.message
+      ? typeof error.message === 'string'
+        ? error.message
         : JSON.stringify(error.message)
-      : error ? JSON.stringify(error)
-      : message;
+      : error
+        ? JSON.stringify(error)
+        : message;
 
     if (status && msg) {
       return `${status} ${msg}`;
@@ -128,3 +128,19 @@ export class UnprocessableEntityError extends APIError<422, Headers> {}
 export class RateLimitError extends APIError<429, Headers> {}
 
 export class InternalServerError extends APIError<number, Headers> {}
+
+// Each class names itself, so a caught error reports its real class rather than the inherited
+// `Error` — what a log line, a `switch (error.name)`, and an error reporter grouping by name read.
+ApiTestError.prototype.name = 'ApiTestError';
+APIError.prototype.name = 'APIError';
+APIUserAbortError.prototype.name = 'APIUserAbortError';
+APIConnectionError.prototype.name = 'APIConnectionError';
+APIConnectionTimeoutError.prototype.name = 'APIConnectionTimeoutError';
+BadRequestError.prototype.name = 'BadRequestError';
+AuthenticationError.prototype.name = 'AuthenticationError';
+PermissionDeniedError.prototype.name = 'PermissionDeniedError';
+NotFoundError.prototype.name = 'NotFoundError';
+ConflictError.prototype.name = 'ConflictError';
+UnprocessableEntityError.prototype.name = 'UnprocessableEntityError';
+RateLimitError.prototype.name = 'RateLimitError';
+InternalServerError.prototype.name = 'InternalServerError';
